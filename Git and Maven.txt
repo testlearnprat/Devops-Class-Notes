@@ -1,0 +1,218 @@
+Git class -1 (22.10.2022)
+start a working area (see also: git help tutorial)
+   clone      Clone a repository into a new directory
+   init       Create an empty Git repository or reinitialize an existing one
+
+work on the current change (see also: git help everyday)
+   add        Add file contents to the index
+   mv         Move or rename a file, a directory, or a symlink
+   reset      Reset current HEAD to the specified state
+   rm         Remove files from the working tree and from the index
+
+examine the history and state (see also: git help revisions)
+   bisect     Use binary search to find the commit that introduced a bug
+   grep       Print lines matching a pattern
+   log        Show commit logs
+   show       Show various types of objects
+   status     Show the working tree status
+
+grow, mark and tweak your common history
+   branch     List, create, or delete branches
+   checkout   Switch branches or restore working tree files
+   commit     Record changes to the repository
+   diff       Show changes between commits, commit and working tree, etc
+   merge      Join two or more development histories together
+   rebase     Reapply commits on top of another base tip
+   tag        Create, list, delete or verify a tag object signed with GPG
+
+collaborate (see also: git help workflows)
+   fetch      Download objects and refs from another repository
+   pull       Fetch from and integrate with another repository or a local branch
+   push       Update remote refs along with associated objects
+
+----------------------------------------***********************************************---------------------------------------------
+
+Git class-2 (23.10.2022)
+
+1. git clone <repository-url> : Clones/Downloads the existing repository from github
+2. git branch <new branch name> : Creates a new branch in the workspace which can be then pushed to central repo
+3. git checkout <existing branch name>: Jump to mentioned branch 
+4. git checkout -b <new branch name>: Create a new branch and jump to that branch
+5. git status : Checks which files are modified and whether they are added to staging and are committed committed to loacal repo. 
+6. git add <file name> : adds the files in the workspace to staging
+7. git commit -m "meaningful comment" --> move the files in the staging to local repo
+8. git log --> list what changes has been done by which user.
+9. git config --global user.name "<userName>" --> add the username
+10. git config --global user.mail "<emailID>" --> adds the emailID
+11. git push origin <branch name> --> Push the local repo changes to the central repo.
+12. git blame --> checks who committed what changes.
+
+
+
+Assignments: 
+1. create a github account and generate a token
+2. Create collaborators/team members in the github
+3. Create a pull request in github
+4. Create a repo in the local and push it to github
+
+
+Git class-3 (26.10.2022)
+1. git pull <repo-url>
+2. git fetch <repo-url>
+3. git clone = git pull + git fetch
+4. git stash --> stash/hide the changes
+5. git stash pop --> unstash/unhide the changes
+6. branch renaming
+7. git merge
+8. git rebase
+9. git tag -a "tag-name" -m "message" (assignment)
+10. git revert
+11. git reset
+12. git commit --amend -m "New and correct message
+13.The git bisect command is used to discover the commit that has introduced a bug in the code
+14. git clone -b <branchname> --single-branch -depth 1 url --> To clone only single branch and last commit.
+15. git diff HEAD <filenmae> --> shows diff between commit n the working dir of a file
+16. git diff <filename> --> shows diff between stage area and working dir of the file
+17. git diff --staged Head <filename> --> diff between last commit n staged ares
+18. git diff <branch1> <branch2> --> diff between two branch
+19. git diff master url <branch name> --> diff between local n remote repo
+
+In .git all the information will be stored.
+A git submodule is a record within a host git repository that points to a specific commit in another external repository
+Submodules do not track git refs or branches and are not automatically updated when the host repository is updated.
+git submodule add --> command to add submodule
+
+Assignments:
+1. git tag
+2. Difference between merge and rebase(try commands)
+3. git squash
+4. git cherrypick
+5. difference between pull and fetch
+
+Build tools  --> build tool is used to convert source code into binary/executable files which upon installation , apllication can be run.
+
+Compiler converts source code into object file.
+Javac is compiler for java
+gcc/g++ is compiler for c/c++
+
+An object file is a computer file containing object code, that is, machine code output of an assembler or compiler
+
+Makefile --> Its a file which contains the instructions for the build tool to follow.
+
+gcc <file name *.c> -o <output file name> --> command for gcc compiler
+gcc -c <filename> 
+
+
+Maven class-- 28.10.2022
+
+maven - central repo -->https://repo.maven.apache.org/maven2/
+install java- https://computingforgeeks.com/how-to-install-java-11-openjdk-11-on-rhel-8/
+install maven-- https://tecadmin.net/install-apache-maven-on-centos/\
+pom.xml example-- https://www.javatpoint.com/maven-pom-xml
+maven lifecycle --> https://www.geeksforgeeks.org/maven-lifecycle-and-basic-maven-commands/#:~:text=mvn%20clean%3A%20Cleans%20the%20project,Runs%20tests%20for%20the%20project.
+maven commands cheatsheet --> https://www.digitalocean.com/community/tutorials/maven-commands-options-cheat-sheet
+
+
+assingments:
+1. download a java project and run all the maven commands
+2. what is mvn clean install, mvn clean deploy
+			
+MAVEN Life Cycle
+Maven is a build tool which is used to compile the java. Maven has series of steps which are called as maven build life cycle or maven phases.
+
+-project structure
+-pom.xml - dependency/pugin
+-reports
+-documentation
+-packaging
+
+src/main.java --> soursecode
+src/main.resources --> third party files/resources
+src/test.java --> unit test cases
+src/test.resources --> third party files/resources
+src
+target
+
+https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+
+Maven repositaries -->
+1.Local Repo --> It is a folder created on same machine where we run maven commands. .m2 is a folder which is 
+called as local repositary and we have all the dependencies reqired for the package will be available here.
+
+2.Central repo --> this is a repositary which is managed by maven. It is publicly accessable.
+
+3.Remote Repo --> It is a repo which is confined to organisations.
+
+Deployment process
+1.stop tomcat server
+2.Take the backup of application logs and build
+3.copy new build (.war ,.jar, .ear ) to webapps folder and start tomcat server
+4.start tomcat service
+
+if deployment fails --> rollback to previous build 
+1. stop tomcat services
+2. copy old builds to webapps folder
+3. start tomcat services
+
+MAVEN commands --> 
+mvn compile --> this command is used to compile the code
+mvn clean --> this command will clean the previous build files
+mvn test --> this command will run testing steps
+mvn test compile --> This will compile code from testing source
+mvn package --> it creates the artifacts
+mvn install --> This command deploys packages and stores them in a local repo.
+mvn deploy --> artifacts are copied to remote repo
+
+JFROG n NEXUS are famous artifacts - used to store .jar ,.war files
+
+JAR file is a file that has Java class files, related metadata, and resources 
+combined into a single file to execute a Java application. On the other hand, 
+the WAR file is a file that contains files such as a servlet, JSP, HTML, 
+JavaScript etc., which are necessary to develop web applications while the  
+EAR is a Java EE file that packs one or more modules into a single archive 
+to deploy them on to an application server.
+
+A transitive dependency exists when you have the following functional 
+dependency pattern: A → B and B → C ; therefore A → C. This is precisely the case with the original items relation.
+
+Maven local repo can be changed by editing /conf/settings.xml and giving new path and also by editing in pom.xml my repositary.
+
+The Super POM is Maven's default POM. All POMs extend the Super POM 
+unless explicitly set, meaning the configuration specified in the Super 
+POM is inherited by the POMs you created for your projects. You can see 
+the Super POM for Maven 3.6. 3 in Maven Core reference documentation
+
+Dependencies are third-party software required by the project. Some common examples are JUnit and JDBC. See the Maven 
+Central Repository for a listing of all available tools and popular dependencies
+
+The maven plugins are central part of maven framework, it is used to perform specific goal.
+Plugins are the central feature of Maven that allow for the reuse of common build logic across multiple projects. 
+They do this by executing an "action" (i.e. creating a WAR file or compiling unit tests) in the context of a project's 
+description - the Project Object Model (POM).
+According to Apache Maven, there are 2 types of maven plugins. 
+1.Build Plugins 
+2.Reporting Plugins
+
+Build Plugins --> These plugins are executed at the time of build. These plugins should be declared inside the <build> element.
+
+Reporting Plugins --> These plugins are executed at the time of site generation. These plugins should be declared inside the 
+<reporting> element.
+
+Maven Core Plugins
+A list of maven core plugins are given below:
+
+Plugin				Description
+clean				clean up after build.
+compiler			compiles java source code.
+deploy				deploys the artifact to the remote repository.
+failsafe			runs the JUnit integration tests in an isolated classloader.
+install				installs the built artifact into the local repository.
+resources			copies the resources to the output directory for including in the JAR.
+site				generates a site for the current project.
+surefire			runs the JUnit unit tests in an isolated classloader.
+verifier			verifies the existence of certain conditions. It is useful for integration tests
+
+https://www.tutorialspoint.com/maven/maven_pom.htm
+
+learn git reset --soft , --hard vs reset ...  git checkout commit id ...head? git diff , git hooks - 
+https://www.youtube.com/watch?v=5icDpq56VDQ&list=PLUDwpEzHYYLuMNNTu0EdWBeBtXdRhj4Lv&index=7
