@@ -1,0 +1,381 @@
+---------------------------------------------------------------------------------------------------------------
+JENKINS
+Jenkins is an open source automation server. It helps automate the parts of software development related to
+building, testing, and deploying, facilitating continuous integration and continuous delivery. 
+
+https://www.simplilearn.com/tutorials/jenkins-tutorial/jenkins-interview-questions#:~:text=Jenkins%20uses%20an%20internal%20database,LDAP)%20server%20to%20authenticate%20users.
+---------------------------------------------------------------------------------------------------------------
+01-11-22 - class 1
+---------------------------------------------------------------------------------------------------------------
+Installation:
+
+URL: jenkins.io
+Note: Ubuntu Flavor of Linux is preffered
+---------------------------------------------------------------------------------------------------------------
+Post Installation:
+
+Install git, maven, make
+---------------------------------------------------------------------------------------------------------------
+Triggers:
+
+1. Build Periodically:
+2. POLL - SCM:
+3. Github Webhook Trigger:
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+02-11-22 - class 2
+---------------------------------------------------------------------------------------------------------------
+Plugins:
+
+CVS - Source code management plugin
+Monitoring Plugin - To monitor the jenkins master and its agents
+Docker Plugins - To integrate docker with jenkins
+kubernetes plugins - To integrate kubernetes with jenkins
+artifactory - To integrate JFORG with jenkins
+Thin Backup - To periodically take backup of jenkins server
+blueocean - Modern personalized dashboards
+active choices plugin - for dynamic parameterisation
+multibranch scan webhook trigger
+---------------------------------------------------------------------------------------------------------------
+Assignment: Setup Github Webhook Trigger for a Jenkins Job
+---------------------------------------------------------------------------------------------------------------
+Jenkins Master-Slave
+A single jenkins server to perform all the operations like building packages , testing builds, and also environments is not a good setup
+as it will become a single point of failure. Rather than having a single performing all the operations we can have multiple servers with 
+different environments using jenkins master-slave concept.
+
+How to secure jenkins server/ limit the users what they can access
+Matrix security - with this we can configure the permissions for each user individually on what they can perform on the server 
+Project based matrix authorisation strategy - Its an extension to matrix based security where you can setup permissions to individual projects
+
+/etc/default/jenkins --> to change port
+try /etc/sysconfig for the change port
+
+Establish passwordless connection from master to slave server ...(copy public key in authorized_keys , paste private key in jenkins page )
+
+CI-CD
+Once Dev team pushes the code to github, the jenkins pipeline job will get triggered. It has 4 stages namely Git checkout, Build, Push and Deploy.
+In Git checkout stage jenkins will pull source code from github. Once this stage is successfull, build stage will get trigger automatically.
+In build stage the source code will be compiled and a artifact is generated. After successfull completion of this stage, push stage will get triggered.
+In push stage , the artifact will be pushed to an artifactory/repo. Then the deploy stage will get triggered.
+In deploy stage the artifact from the artifactory will be deployed to the environment.
+
+Tomcat
+artifact - .war
+artifactory - jfrog,nexus
+environment - tomcat
+
+K8
+artifact - docker image
+artifactory - Dockerhub, ECR
+environment - K8 pod using deployment controller.
+
+
+CICD Pipeline
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Git Checkout Stage') {
+            steps {
+                echo 'This is Git Checkout Stage'
+            }
+        }
+        stage('Build Stage') {
+            steps {
+                echo 'This is Build Stage'
+            }
+        }
+        stage('Push Stage') {
+            steps {
+                echo 'This is Push Stage'
+            }
+        }
+        stage('Deploy Stage') {
+            steps {
+                echo 'This is Deploy Stage'
+            }
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+Pipeline with Agents
+
+pipeline {
+    agent none
+
+    stages {
+        stage('Master') {
+            agent {label 'master'}
+            steps {
+                sh 'touch master'
+            }
+        }
+        stage('Agent') {
+            agent {label 'tomcat'}
+            steps {
+                sh 'touch agent'
+            }
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+Pipeline with Trigger
+
+pipeline {
+    agent none
+
+    triggers {
+        pollSCM '* * * * *'
+    }
+
+    stages {
+        stage('Master') {
+            agent {label 'master'}
+            steps {
+                sh 'touch master'
+            }
+        }
+        stage('Agent') {
+            agent {label 'tomcat'}
+            steps {
+                sh 'touch agent'
+            }
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+Assignment: Setup Email Notification with jenkins Job
+---------------------------------------------------------------------------------------------------------------
+Continuous Integration: is a development practice that requires developers to integrate code
+into a shared repository several times a day. Each check-in is then verified by an automated build,
+allowing teams to detect problems early. By integrating regularly, you can detect errors quickly,
+and locate them more easily.
+
+Continuous Delivery: Continuous delivery picks up where continuous integration ends.
+CD automates the delivery of applications to selected infrastructure environments.
+Most teams work with multiple environments other than the production, such as development
+and testing environments, and CD ensures there is an automated way to push code changes to them.
+
+Continuous Deployment: Continuous deployment goes one step further than continuous delivery.
+With this practice, every change that passes all stages of your production pipeline is released
+to your customers. There's no human intervention, and only a failed test will prevent a new change
+to be deployed to production.
+
+
+
+Sonar scanner - checks for bugs, repitations of code, code smells(maintainability-related issue), security threates
+80% threshhold for the test to pass in sonar scanner
+
+A Jenkins pipeline is a collection of jobs/stages that brings the software from version controll into the hands of 
+end users. These jobs/stages are interlinked with each other and work in sequence called as continuous delivery pipeline.
+Checkout-build-push-deploy
+
+Jenkins Pipeline can be written in a text file called as jenkins file. With the help of jenkins file you can execute your 
+jenkins pipeline job. Default name - Jenkinsfile.
+
+Shared Library in Jenkins
+
+Issues debugging in log folder
+
+Pipeline with Parallel Stages:
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Stage 1') {
+          parallel {
+            stage('Stage 1 - A') {
+              steps {
+                echo 'Stage 1 - A'
+                sh 'sleep 5'
+              }
+            }
+            stage('Stage 1 - B') {
+              steps {
+                echo 'Stage 1 - B'
+                sh 'sleep 5'
+              }
+            }
+            stage('Stage 1 - C') {
+              steps {
+                echo 'Stage 1 - C'
+                sh 'sleep 5'
+              }
+            }
+          }
+        }
+        stage('Stage 2') {
+            steps {
+                echo 'This is Stage 2'
+                sh 'sleep 5'
+            }
+        }
+        stage('Stage 3') {
+            steps {
+                echo 'This is Stage 3'
+                sh 'sleep 5'
+            }
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+Pipeline With Parallel Steps
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Stage 1') {
+            steps {
+              parallel (
+                    step1:{
+                      echo 'This is step 1'
+                      sh 'sleep 5'
+                    },
+                    step2:{
+                      echo 'This is Step 2'
+                      sh 'sleep 5'
+                    },
+                    step3:{
+                      echo 'This is Step 3'
+                      sh 'sleep 5'
+                    }
+              )
+            }
+        }
+        stage('Stage 2') {
+            steps {
+                echo 'This is Stage 3'
+                sh 'sleep 5'
+            }
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+CICD pipeline
+
+pipeline {
+    agent {label 'tomcat'}
+
+    stages {
+        stage('Git Checkout Stage') {
+            steps {
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/artisantek/java-example.git'
+            }
+        }
+        stage('Build Stage') {
+
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('Push Stage') {
+            steps {
+                echo 'This is Push Stage'
+            }
+        }
+        stage('Deploy Stage') {
+            steps {
+                sh 'sudo cp target/*.war /opt/tomcat/apache-tomcat-9.0.68/webapps/'
+            }
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+Pipeline:
+
+Checkout --> Build --> Push --> Deploy
+
+JFROG
+
+URl: https://github.com/artisantek/jfrog-installation-ubuntu.git
+
+Initial Setup
+
+username: admin
+password: password
+---------------------------------------------------------------------------------------------------------------
+SonarQube:
+
+URL: https://github.com/artisantek/sonarqube-installation-ubuntu.git
+
+Initial Setup
+
+username: admin
+password: admin
+
+sonarqube scanner for jenkins - plugin 
+---------------------------------------------------------------------------------------------------------------
+Jenkinsfile:
+
+Default Name: Jenkinsfile
+
+Assignment: Work on Parameterized Jenkins Jobs
+---------------------------------------------------------------------------------------------------------------
+
+Parameterized Jobs
+This plugin lets you trigger new builds when your build has completed, with various ways of specifying parameters 
+for the new build. These new builds appear as "Subprojects" in the Jenkins UI when you are looking at a project 
+that triggers them.
+
+Dynamic parameterisation - nexxt choice depends on previous choice - https://www.youtube.com/watch?v=bYi4IXep2mk&list=PLLYW3zEOaqlKmPyhjIrT4RmmQDQYYrTjk&index=6
+
+To copy Jenkins job from 1 server to another jenkins server --> Copy the /var/lib/jenkins/jobs/jobname/config.xml 
+to ther other server jenkins home path
+If you want complete build  --> copy entire folder.
+Then manage jenkins-->Reload configuration from disk
+
+Secret textc-->build environment-->use secret text
+
+thin backup - differential backup - https://www.youtube.com/watch?v=AE6n0WdwGBY&list=PLLYW3zEOaqlKmPyhjIrT4RmmQDQYYrTjk&index=6
+
+Multibranch Pipeline:
+Install Pipeline: multibranch plugin
+
+The Jenkins master acts to schedule the jobs, assign slaves, and send builds to slaves to execute the jobs. It will also monitor the slave state (offline or online)
+ and get back the build result responses from slaves and the display build results on the console output.
+
+Jenkins Master
+
+Your main Jenkins server is the Master. The Master’s job is to handle:
+
+Scheduling build jobs.
+Dispatching builds to the slaves for the actual execution.
+Monitor the slaves (possibly taking them online and offline as required).
+Recording and presenting the build results.
+A Master instance of Jenkins can also execute build jobs directly.
+
+Jenkins Slave
+A Slave is a Java executable that runs on a remote machine. Following are the characteristics of Jenkins Slaves:
+It hears requests from the Jenkins Master instance.
+Slaves can run on a variety of operating systems.
+The job of a Slave is to do as they are told to, which involves executing build jobs dispatched by the Master.
+You can configure a project to always run on a particular Slave machine or a particular type of Slave machine,
+or simply let Jenkins pick the next available Slave.
+
+periodically monthly audit to check secure.
+Manage junkins/global 
+
+Active directory - Authenticating done by jenkins
+Default way , Application based , active directory
+Jenkins uses an internal database to store user data and credentials. Jenkins can use a 
+lightweight Directory Access Protocol (LDAP) server to authenticate users.
+
+The Multibranch Pipeline project type enables you to implement different jenkins files for different branches of 
+the same project. In a multi branch pipeline project, jenkins automatically discovers,manages and executes pipelines 
+for branches which contain a jenkins file in source control. - 
+https://www.youtube.com/watch?v=fo36b23cpIU
+
+Jenkins provides multi-configuration project. With this option we can create only one job with many configurations.
+ Each configuration will be executed as a separate job. This is exactly what we need to simplify our scheduled tests,
+ which can be used in conjunction with TestComplete or TestExecute.
+
+AWS codepipeline -- 
+
+There can be 2 masters(active node, passive node) for a job as a backup if one master is down -- > https://www.youtube.com/watch?v=Wa0sM4D56qQ --> using HAproxy load balance, aws elastic file system.
+number of slave in a job can be 4-6 generally
+
+email pipeline -https://www.youtube.com/watch?v=44xWLgGoLUg
