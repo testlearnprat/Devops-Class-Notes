@@ -216,3 +216,6 @@ https://www.tutorialspoint.com/maven/maven_pom.htm
 
 learn git reset --soft , --hard vs reset ...  git checkout commit id ...head? git diff , git hooks - 
 https://www.youtube.com/watch?v=5icDpq56VDQ&list=PLUDwpEzHYYLuMNNTu0EdWBeBtXdRhj4Lv&index=7
+
+Git can specify which files or parts of your project should be ignored by Git using a .gitignore file.
+Git will not track files and folders specified in .gitignore
