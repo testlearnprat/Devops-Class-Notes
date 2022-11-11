@@ -379,3 +379,10 @@ There can be 2 masters(active node, passive node) for a job as a backup if one m
 number of slave in a job can be 4-6 generally
 
 email pipeline -https://www.youtube.com/watch?v=44xWLgGoLUg
+
+In cases where an older release of the plugin is desired, a Jenkins administrator can download an older . hpi archive and manually 
+install that on the Jenkins controller.
+
+Download the plugin (*.hpi file) and put it in the following directory:
+<jenkinsHome>/plugins/
+Afterwards you will need to restart Jenkins.
