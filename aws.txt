@@ -31,3 +31,8 @@ API architecture refers to the process of developing a software interface that e
 
 Load balancer is a AWS service which uniformly distributes network traffic and workloads among multiple servers or cluster of servers.
 Load balancer increases the availability and fault tolerance of an application
+
+Block storage is the oldest and simplest form of data storage. Block storage stores data in fixed-sized chunks called — you guessed it — ‘blocks’.  there is no metadata associated with blocks
+Compared to block storage, object storage is much newer. With object storage, data is bundled with customizable metadata tags and a unique identifier to form objects. Objects are stored in a flat address space and there is no limit to the number of objects stored, making it much easier to scale out.
+
+What Is the OSI Model. The Open Systems Interconnection (OSI) model describes seven layers that computer systems use to communicate over a network. It was the first standard model for network communications, adopted by all major computer and telecommunication companies in the early 1980s.

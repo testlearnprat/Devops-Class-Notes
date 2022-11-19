@@ -1,0 +1,17 @@
+sudo amazon-linux-extras install postgresql10
+
+psql \
+   --host=database-1.ckw228xgvmxb.ap-south-1.rds.amazonaws.com \
+   --port=5432 \
+   --username=postgres \
+   --password \
+   --dbname=postgres
+
+   CREATE TABLE accounts (
+   	user_id serial PRIMARY KEY,
+   	username VARCHAR ( 50 ) UNIQUE NOT NULL,
+   	password VARCHAR ( 50 ) NOT NULL,
+   	email VARCHAR ( 255 ) UNIQUE NOT NULL,
+   	created_on TIMESTAMP NOT NULL,
+           last_login TIMESTAMP
+   );
