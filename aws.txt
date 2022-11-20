@@ -36,3 +36,6 @@ Block storage is the oldest and simplest form of data storage. Block storage sto
 Compared to block storage, object storage is much newer. With object storage, data is bundled with customizable metadata tags and a unique identifier to form objects. Objects are stored in a flat address space and there is no limit to the number of objects stored, making it much easier to scale out.
 
 What Is the OSI Model. The Open Systems Interconnection (OSI) model describes seven layers that computer systems use to communicate over a network. It was the first standard model for network communications, adopted by all major computer and telecommunication companies in the early 1980s.
+
+Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale. API developers can create APIs that access AWS or other web services, as well as data stored in the AWS Cloud 
+API is the acronym for Application Programming Interface, which is a software intermediary that allows two applications to talk to each other.

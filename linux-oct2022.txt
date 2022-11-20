@@ -682,6 +682,8 @@ systemctl status service_name --> check if service is running
 systemctl start servicename --> to start service
 systemctl stop servicename --> to stop service
 
+curl -s --head www.google.com | head -1 | grep 200
+
 A service is a program that runs in the background outside the interactive control of system users as they lack an interface
 
 telnet or ping  --> to check if IP/server is accessable or nott

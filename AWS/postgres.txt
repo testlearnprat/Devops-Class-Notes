@@ -1,9 +1,9 @@
 sudo amazon-linux-extras install postgresql10
 
 psql \
-   --host=database-1.ckw228xgvmxb.ap-south-1.rds.amazonaws.com \
+   --host=database-1.c35tfcljwngs.ap-south-1.rds.amazonaws.com \
    --port=5432 \
-   --username=postgres \
+   --username=prateek \
    --password \
    --dbname=postgres
 
