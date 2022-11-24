@@ -1,0 +1,10 @@
+IAC - Infrastructure as code is a aprocess of managing and provisioning infrastucture through configuration files.
+
+Installation - 
+--> Download the executable file of terraform open source from terraform.io
+--> extract the zip file and copy it to a folder
+--> add the path of terraform executable file  (terraform.exe) to the system environment variables
+
+Terraform is an open source IAC tool develop by hashicorp and is used to plan, apply, and destroy the infrastucture using hcl(hashicorp configuration language)
+Advantages -->Planability - with terraform we can plan the changes before actually modifying the infrastucture.
+--> Reusability - same terraform code can be reused for multiple environments or multiple teams by easily changing the parameters.

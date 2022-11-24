@@ -1,0 +1,171 @@
+"The cloud" refers to servers that are accessed over the Internet, and the software and databases that run on those servers
+
+
+CloudWatch enables you to monitor your complete stack (applications, infrastructure, and services) and use alarms, logs, and events 
+data to take automated actions and reduce mean time to resolution (MTTR). This frees up important resources and allows you to focus 
+on building applications and business value.
+
+Latency -- Network latency is the amount of time it takes for a data packet to go from one place to another
+
+Basic Cloudwatch - 5 mins
+
+STS -- > AWS provides AWS Security Token Service (AWS STS) as a web service that enables you to request temporary, limited-privilege 
+credentials for AWS Identity and Access Management (IAM) users or for users you authenticate.
+
+Amazon Simple Queue Service (SQS) lets you send, store, and receive messages between software components at any volume, without losing 
+messages or requiring other services to be available.
+
+Amazon Simple Notification Service (Amazon SNS) is a web service that makes it easy to set up, operate, and send notifications from the 
+cloud.
+
+P agent -- used to connect to private ip without saving the pem file in public server.
+
+IOPS, IOPS is a count of the read/write operations per second, but throughput is the actual measurement of read/write bits per second that 
+are transferred over a network
+
+ssd -- solid state drive
+
+A burstable instance is a virtual machine (VM) instance that provides a baseline level of CPU performance with the ability to burst to a 
+higher level to support occasional spikes in usage.
+
+fargate --https://containersonaws.com/introduction/ec2-or-aws-fargate/       https://aws.amazon.com/blogs/aws/aws-fargate/
+
+https://toolbox.iskysoft.com/data-recovery-tips/ext4-vs-xfs-vs-ext3-vs-btrfs-vs-zfs.html
+
+API architecture refers to the process of developing a software interface that exposes backend data and application functionality for 
+use in new applications. With an API-first architecture, you can create ecosystems of applications that are modular and reusable — 
+which is ideal for microservices
+
+Load balancer is a AWS service which uniformly distributes network traffic and workloads among multiple servers or cluster of servers.
+Load balancer increases the availability and fault tolerance of an application
+
+Block storage is the oldest and simplest form of data storage. Block storage stores data in fixed-sized chunks called — you guessed it — 
+‘blocks’.  there is no metadata associated with blocks
+Compared to block storage, object storage is much newer. With object storage, data is bundled with customizable metadata tags and a 
+unique identifier to form objects. Objects are stored in a flat address space and there is no limit to the number of objects stored, 
+making it much easier to scale out.
+
+What Is the OSI Model. The Open Systems Interconnection (OSI) model describes seven layers that computer systems use to communicate 
+over a network. It was the first standard model for network communications, adopted by all major computer and telecommunication 
+companies in the early 1980s.
+
+Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at 
+any scale. API developers can create APIs that access AWS or other web services, as well as data stored in the AWS Cloud 
+API is the acronym for Application Programming Interface, which is a software intermediary that allows two applications to talk to each 
+other.
+
+There are multiple Routing Policies facilitated. -- https://crishantha.medium.com/aws-route-53-and-routing-policies-b7dc67e74516
+Simple Routing Policy
+Fail-over Routing Policy
+Weighted Routing Policy
+Latency Routing Policy
+Geo-location Routing Policy
+Multivalue Routing Policy
+
+AWS is a secure cloud sevices providing platform which provides different services based on compute power, storage, database, 
+content delivery, monitering etc
+Domains :
+Compute - EC2, EBS, Lambda
+Storage - S3 , EfS , glacier
+network - vpc, route 53, cloud front
+monitering - cloud watch , cloud formation, lbs
+security - iam
+database - rds, redshift
+application - sns, email, sqs
+devops - codepipeline, code commit, code build 
+
+Lambda is a serverless compute service where devlopers doesnt have to worry about which type of aws resources they need to set up, 
+they can just test their code on the go.
+
+The following are the limitations of Amazon RDS:
+Patching causes downtime.
+It doesn’t support scale-out for the write workloads.
+The user has to perform some administrative tasks.
+A downtime is needed to perform scaling operations.
+There is no guarantee for zero data loss.
+It doesn’t support automated compression management
+
+AWS CloudFormation is a service that helps you model and set up your AWS resources so that you can spend less time managing those 
+resources and more time focusing on your applications that run in AWS. You create a template that describes all the AWS resources 
+that you want (like Amazon EC2 instances or Amazon RDS DB instances), and CloudFormation takes care of provisioning and configuring 
+those resources for you
+
+A relational database is structured, meaning the data is organized in tables. Many times, the data within these tables have 
+relationships with one another, or dependencies. A non relational database is document-oriented, meaning, all information gets 
+stored in more of a laundry list order
+example for non relational database - mongodb, cassandra, hbase , neo4, dynamodb
+
+All the NLB cares about is forwarding the incoming TCP or UDP connection to a target. The NLB does not inspect an incoming HTTP request, 
+for example. Therefore, the NLB has much less work to do than an ALB. As a result, the NLB needs significantly less time to forward 
+an incoming request
+
+Network Load Balancer (NLB)
+This is the distribution of traffic based on network variables, such as IP address and destination ports. It is layer 4 (TCP) and 
+below and is not designed to take into consideration anything at the application layer such as content type, cookie data, custom 
+headers, user location, or the application behavior. It is context-less, caring only about the network-layer information contained 
+within the packets it is directing this way and that.
+https://medium.com/awesome-cloud/aws-difference-between-application-load-balancer-and-network-load-balancer-cb8b6cd296a4
+
+OSI model -- 7 layers -- What Is the OSI Model. The Open Systems Interconnection (OSI) model describes seven layers that computer 
+systems use to communicate over a network.
+
+API is the acronym for Application Programming Interface, which is a software intermediary that allows two applications to talk to 
+each other.
+
+Launch Configuration in Auto scaling -- Ami, Ebs, roles, private key , sg
+
+AWS WAF is a web application firewall that helps protect apps and APIs against bots and exploits that consume resources, skew metrics, 
+or cause downtime
+
+Amazon API Gateway is a fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs 
+at any scale. APIs act as the "front door" for applications to access data, business logic, or functionality from your backend services.
+
+In Lambda, concurrency is the number of requests your function can handle at the same time. There are two types of concurrency controls 
+available:
+Reserved concurrency – Reserved concurrency guarantees the maximum number of concurrent instances for the function. When a function has 
+reserved concurrency, no other function can use that concurrency. There is no charge for configuring reserved concurrency for a function.
+
+Provisioned concurrency – Provisioned concurrency initializes a requested number of execution environments so that they are prepared 
+to respond immediately to your function's invocations. Note that configuring provisioned concurrency incurs charges to your AWS account.
+
+Lamda tutorials : https://www.youtube.com/watch?v=5QwrseYLwNM&list=PL5KTLzN85O4KO0qEeUVvwTTcHFsdE6Dhx&index=8
+
+A Lambda layer is an archive containing additional code, such as libraries, dependencies, or even custom runtimes. When you 
+include a layer in a function, the contents are extracted to the /opt directory in the execution environment
+
+Three components comprise AWS Lambda:
+A function. This is the actual code that performs the task.
+A configuration. This specifies how your function is executed.
+An event source (optional). This is the event that triggers the function. You can trigger with several AWS services or a third-party 
+service.
+
+Amazon Comprehend is a natural-language processing (NLP) service that uses machine learning to uncover valuable insights and 
+connections in text.
+
+The first time you call a function takes a bit more time to execute and respond. Any subsequent iteration with the same function 
+will be quite faster than the first one. So we call the very first iteration with a function a “cold start”. Any further request will 
+be handled by an already wrapped function inside a running container, so the function will have a “warm start”.
+
+Both the Edge Locations (EL) and Availability Zones (AZ) are AWS Data Centers, but EL are primarily used for caching of the data to 
+provide better user experience with low latency, the AZ are used for hosting servers, websites, applications, softwares, Big Data 
+processing, analytics and a wide variety of use cases
+
+Regional Edge Caches are located between origin web servers and global edge locations and have a larger cache
+
+
+Amazon Cognito lets you easily add user sign-up and authentication to your mobile and web apps. Amazon Cognito also enables you to 
+authenticate users through an external identity provider and provides temporary security credentials to access your app's backend 
+resources in AWS or any service behind Amazon API Gateway
+
+By using an Elastic IP address, you can mask the failure of an instance or software by rapidly remapping the address to another 
+instance in your account. 
+
+Aws xray is a distributed tracing system /performance monitering system  --- helps developers analyze n debug applications 
+using microservice architecture
+
+Microservices is an architectural and organisational approach to software development where software is composed of small 
+independent services which communicate over well defined api's
+
+Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and 
+WebSocket APIs at any scale. API developers can create APIs that access AWS or other web services, as well as data stored in the AWS Cloud 
+The API endpoint type can be edge-optimized, regional, or private, depending on where the majority of your API traffic originates from.
