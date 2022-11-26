@@ -1,4 +1,4 @@
-IAC - Infrastructure as code is a aprocess of managing and provisioning infrastucture through configuration files.
+IAC - Infrastructure as code is a process of managing and provisioning infrastucture through configuration files.
 
 Installation - 
 --> Download the executable file of terraform open source from terraform.io
@@ -8,3 +8,65 @@ Installation -
 Terraform is an open source IAC tool develop by hashicorp and is used to plan, apply, and destroy the infrastucture using hcl(hashicorp configuration language)
 Advantages -->Planability - with terraform we can plan the changes before actually modifying the infrastucture.
 --> Reusability - same terraform code can be reused for multiple environments or multiple teams by easily changing the parameters.
+
+Terraform lifecycle/Execution process -
+1. Terraform init: this is used to initialize a working directory containing terraform configuration files. we can run terraform init multiple times.
+   Terraform init operations - A) initializes backend B) initializes the provider plugin c) initializes the child modules
+A)Initialize backend - file which are created after init are important and should not be lost, so we keep them in remote place called backed.
+B)Initialize provider plugin - On init Terraform plugins will be downloaded in .terraform folder -- terraform is a plugin based architectute...if we want aws it 
+will download aws plugin and we can work in aws.
+
+terraform.tfstate -- never delete this important file
+
+Providers --  Terraform uses a plugin based architecture called providers to support 100s of infrastructure n service providers.  The terraform init command downloads and installs provider.
+Syntax: provider "<name of provider>" {
+             region = "<region code>"
+	     aceess_key = "<>"
+	     secret_key = ="<>"
+     }
+
+
+2. Terraform plan: It is used to create an execution plan, but it will not make any changes to the infrastructure. This command will 
+scan all the .tf files in the directory and creates an execution plan
+    terraform plan --> To create an excution plan
+    terraform plan -out <file name> --> to save terraform plan to a file.	
+
+3.  terraform apply - This command is used to apply the changes from  the configuration files to our cloud provider
+    terraform apply --> to apply changes
+    terraform apply --auto-approve --> to apply changes with auto approve
+    terraform apply <plan file name> --> to apply particular paln file
+
+4.   terraform destroy - its used to destroy terraform managed infrastructure 
+     terraform plan -destroy --> to create destroy plan
+     terraform destroy -target=<resourcetype.resourcename> --> to destroy a particular resource
+     
+
+Terraform validate - it is used to check the syntax of terraform configuration files 
+
+
+Input variables- It serve as parameters for terraform configuration files. They allow the source code to be customized without 
+altering it and therfor making them reusuable 
+syntax:  variable <variable-name> {
+                description = "<information for others to understand>"
+		type = "<int,string,boolean,list>"
+		default = <value> // this is to set default value for the variable
+
+Output values - used to extract values from terraform configuration files.
+syntax:  output "<name>" {
+	value = <resourcetype.resourcename.value>
+}
+
+Count & for_each --> by default a terraform resource block can only create one infrastructure object. If we ever want to create 
+multiple objects witin a single resouce block we can use count and for_each
+  
+Resource dependency  - terraform has the ability to automatically/understand when one resource depends on another by studying thr 
+resource attributes used, but if we want to explicitly mention dependencies between resources that are not visible to terraform we 
+can use depends on arguements.
+
+depends_on = [<resourcetype.resourcename>] 
+
+
+Data Source --> Allows terraform to collect information of infrastructure provisioned outside of terraform or by another seperate 
+terraform configuration 
+	          
+ 

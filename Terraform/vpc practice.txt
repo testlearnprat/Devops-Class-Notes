@@ -1,0 +1,177 @@
+provider "aws" {
+    region = "ap-south-1"
+}
+
+resource "aws_vpc" "vpc1" {
+ cidr_block = "10.10.0.0/16"
+ tags = {
+    Name = "vpc1"
+ }
+ }
+
+ resource "aws_vpc" "vpc2" {
+    cidr_block = "10.20.0.0/16"
+    tags = {
+        Name = "vpc2"
+    }
+ }
+
+ resource "aws_subnet" "subnet1" {
+    availability_zone = "ap-south-1a"
+    vpc_id = aws_vpc.vpc1.id
+    cidr_block = "10.10.1.0/24"
+    map_public_ip_on_launch = "true"
+    tags = {
+        Name = "public_subnet"
+    }   
+ }
+
+ resource "aws_subnet" "subnet2" {
+    availability_zone = "ap-south-1a"
+    vpc_id = aws_vpc.vpc1.id
+    cidr_block = "10.10.2.0/24"
+    tags = {
+        Name = "private_subnet"
+    }   
+ }
+
+ resource "aws_subnet" "subnet_vpc2" {
+    availability_zone = "ap-south-1a"
+    vpc_id = aws_vpc.vpc2.id
+    cidr_block = "10.20.1.0/24"
+    tags = {
+        Name = "private_subnet_vpc2"
+    } 
+ }
+
+ resource "aws_internet_gateway" "ig_vpc1" {
+    vpc_id = aws_vpc.vpc1.id
+    tags = {
+        Name = "ig_vpc1" 
+    }
+ }
+
+ resource "aws_internet_gateway" "ig_vpc2" {
+   vpc_id = aws_vpc.vpc2.id
+   tags = {
+    Name = "ig_vpc2"
+   }
+ }
+
+ resource "aws_nat_gateway" "nat_vpc1" {
+    connectivity_type = "private"
+  subnet_id = aws_subnet.subnet1.id
+     tags = {
+    Name = "nat_vpc1"
+  }
+ }
+
+
+
+resource "aws_route_table" "rt_pub_vpc1" {
+  vpc_id = aws_vpc.vpc1.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.ig_vpc1.id
+  }
+      tags = {
+        Name = "rt_pub_vpc1"
+      }
+  }
+
+
+resource "aws_route_table_association" "vpc1_pub_ass" {
+  subnet_id = aws_subnet.subnet1.id
+  route_table_id = aws_route_table.rt_pub_vpc1.id
+}
+ 
+resource "aws_route_table" "rt_pvr_vpc1" {
+  vpc_id = aws_vpc.vpc1.id
+    route {
+        cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_vpc1.id
+    }
+    tags = {
+        Name = "rt_pvr_vpc1"
+    }
+      } 
+
+
+resource "aws_route_table_association" "vpc1_pvr_ass" {
+  subnet_id = aws_subnet.subnet2.id
+  route_table_id = aws_route_table.rt_pvr_vpc1.id
+}
+
+resource "aws_security_group" "sg1" {
+  vpc_id = aws_vpc.vpc1.id
+
+  ingress {
+    description      = "SSH Port"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "sg1"
+  }
+}
+
+resource "aws_security_group" "sg2" {
+  vpc_id = aws_vpc.vpc2.id
+
+  ingress {
+    description      = "SSH Port"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "sg2"
+  }
+}
+
+resource "aws_instance" "pub_ec2_vpc1" {
+  ami = "ami-062df10d14676e201"
+  instance_type = "t2.micro"
+  key_name = "k"
+  subnet_id = aws_subnet.subnet1.id
+  vpc_security_group_ids = [aws_security_group.sg1.id]
+}
+
+resource "aws_instance" "pvr_ec2_vpc1" {
+  ami = "ami-062df10d14676e201"
+  instance_type = "t2.micro"
+  key_name = "k"
+  subnet_id = aws_subnet.subnet2.id
+  vpc_security_group_ids = [aws_security_group.sg1.id]
+}
+
+resource "aws_instance" "pvr_ec2_vpc2" {
+  ami = "ami-062df10d14676e201"
+  instance_type = "t2.micro"
+  key_name = "k"
+  subnet_id = aws_subnet.subnet_vpc2.id
+  vpc_security_group_ids = [aws_security_group.sg2.id]
+}

@@ -1,0 +1,18 @@
+Infrastructure As Code [IAC]:
+
+Terraform:
+
+Installation:
+
+Step1: Download the Zip archive of Terraform open source version [terraform.io]
+
+Step2: Extract the zip file to your system and copy it to some folder
+
+Step3: Add the path of Terraform executable file[terraform.exe] to the system
+environment variables
+
+Terraform:
+
+Advantages:
+1. Plannability:
+2. Reusability:
