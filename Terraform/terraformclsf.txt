@@ -1,0 +1,261 @@
+---------------------------------------------------------------------------------------------------------------
+TERRAFORM
+---------------------------------------------------------------------------------------------------------------
+24-11-22 - class 1
+---------------------------------------------------------------------------------------------------------------
+Infrastructure As Code [IAC]:
+---------------------------------------------------------------------------------------------------------------
+Terraform:
+
+Installation:
+
+Step1: Download the Zip archive of Terraform open source version [terraform.io]
+
+Step2: Extract the zip file to your system and copy it to some folder
+
+Step3: Add the path of Terraform executable file[terraform.exe] to the system
+environment variables
+---------------------------------------------------------------------------------------------------------------
+Advantages:
+1. Plannability:
+2. Reusability:
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+25-11-22 - class 2
+---------------------------------------------------------------------------------------------------------------
+Terraform Lifecycle/Execution Process:
+
+1. Terraform init:
+
+Terraform init operations:
+
+a. Initializes the backend
+b. Initializes the provider plugin
+c. Initializes the child modules
+
+Providers:
+
+Syntax:
+
+provider "aws" {
+    region = "ap-south-1"
+    access_key = "<access_key_here>"
+    secret_key = "<secret_key_here>"
+}
+---------------------------------------------------------------------------------------------------------------
+2. Terraform Plan:
+
+Commands:
+
+terraform plan --> To create an execution plan
+terraform pan -out <file_name> -->To save terraform plan to a file 
+---------------------------------------------------------------------------------------------------------------
+3. Terraform Apply:
+
+Commands:
+
+terraform apply --> To apply the changes
+terraform apply --auto-approve --> To apply the changes with auto approve
+
+terraform apply <plan-file> --> To apply a particular plan file
+---------------------------------------------------------------------------------------------------------------
+4. Terraform Destroy:
+
+Commands:
+
+terraform destroy --> To destroy the terraform managed Infrastructure
+terraform plan -destroy --> To create destroy plan
+
+terraform destroy -target=<resource-type>.<resource.name> --> To destroy a particular resource
+---------------------------------------------------------------------------------------------------------------
+Terraform Validate:
+---------------------------------------------------------------------------------------------------------------
+Input Variables:
+
+Syntax:
+
+varibale "<varibale-name>" {
+    description = "<This is to let others understand about this variable>"
+    type = "<integer, string, boolean, list>"
+    default = <value> #This is to set a default value for the variable
+}
+---------------------------------------------------------------------------------------------------------------
+Assignment: Create multiple instance using for_each
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+26-11-22 - class 3
+---------------------------------------------------------------------------------------------------------------
+Output Values:
+
+Syntax:
+
+output "<name>" {
+    value = <resource-type>.<resource-name>.<value>
+}
+---------------------------------------------------------------------------------------------------------------
+Count & For Each:
+---------------------------------------------------------------------------------------------------------------
+Resource Dependency:
+
+depends_on = [<resource-type>.<resource-name>]
+---------------------------------------------------------------------------------------------------------------
+Data Source:
+
+Syntax:
+
+data "<resource-type>" "<resource-name>" {
+  #identifier
+}
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+27-11-22 - class 4
+---------------------------------------------------------------------------------------------------------------
+Provisioners:
+
+Types of Provisioners:
+
+1. File:
+
+Syntax:
+
+resource "aws_instance" "<name>" {
+    <ec2-instance-creation-details>
+    <connection-block>
+
+    provisioner "file" {
+        source = "<Path-of-file-to-be-copied>" #Local Machine
+        destination = "<path-where-the-file-has-to-be-copied>" #Remote Machine
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+2. Local-Exec
+
+Syntax:
+
+resource "aws_instance" "<name>" {
+    <ec2-instance-creation-details>
+
+    provisioner "local-exec" {
+        command = "Command-to-be-executed" #local machine
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+3. Remote-Exec
+
+a. inline - Execute a list of Commands
+b. script - Copy a script from local machine and execute it on remote machine
+c. scripts - To copy a list of scripts and execute them on the remote machine
+
+Syntax:
+
+resource "aws_instance" "<name>" {
+    <ec2-instance-creation-details>
+    <connection-block>
+
+    provisioner "remote-exec" {
+        inline = [
+            "<command1>",
+            "<command2>"
+        ]
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+Null Resource:
+
+Syntax:
+
+resource "null_resource" "<name>" {
+    <connection-block>
+    <provisioner-block>
+}
+---------------------------------------------------------------------------------------------------------------
+Alias:
+
+
+Syntax:
+
+provider "aws" {
+    region = "ap-south-1"
+}
+
+provider "aws" {
+    alias = "secondary"
+    region = "ap-southeast-1"
+}
+
+resource "<resource-type>" "<resource-name>" {
+    provider = aws.secondary
+    <Resource-Block-Details> # Singapore Region
+}
+
+resource "<resource-type>" "<resource-name>" {
+    <Resourc-Block-Details> # Mumbai Region
+}
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+28-11-22 - class 5
+---------------------------------------------------------------------------------------------------------------
+Terraform Settings:
+
+Syntax:
+
+terraform {
+  required_version = ">= 0.12"
+
+  required_providers {
+    aws = {
+        source = "hashicorp/aws"
+        version = "= 4.4.1" 
+    }
+  }
+  
+  backend "s3" {
+    bucket = "<bucket-name>"
+    region = "ap-south-1"
+    key = "terraform/backend/terraform.tfstate"
+
+    dynamodb_table = "<dynamodb-name>" 
+  }
+
+}
+---------------------------------------------------------------------------------------------------------------
+Terraform State:
+
+Remote State [Backend]:
+
+State Lock:
+
+Advantages of Remote State:
+1. Common state file within the team
+2. Safer storage
+3. Prevents exposure of sensitive data
+---------------------------------------------------------------------------------------------------------------
+Terraform Taints:
+
+Commands
+
+terraform taint <resource-type>.<resource-name> --> To taint a resource 
+terraform untaint <resource-type>.<resource-name> --> To taint a resource
+
+terraform state list --> To list the resources created by terraform
+terraform state show <resource-type>.<resource-name> --> To get information about a particular resource
+---------------------------------------------------------------------------------------------------------------
+Things to Study:
+1. Terraform Templates
+2. Terraform Import
+3. Terraform Cloud
+
+Things left to discuss:
+1. Terraform Modules
+2. Terraform Graph
+3. Terraform Workspace
+---------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+

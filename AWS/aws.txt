@@ -169,3 +169,45 @@ independent services which communicate over well defined api's
 Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and 
 WebSocket APIs at any scale. API developers can create APIs that access AWS or other web services, as well as data stored in the AWS Cloud 
 The API endpoint type can be edge-optimized, regional, or private, depending on where the majority of your API traffic originates from.
+
+You can use Route 53 to perform three main functions in any combination: domain registration, DNS routing, and health checking. Your
+ website needs a name, such as example.com. Route 53 lets you register a name for your website or web application, known as a domain name.
+DNS service provided by AWS named AWS Route 53 is one of the most well-known, reliable, and cost-effective services for managing and maintaining domains
+What is a hosted zone in Route 53?  -- https://intellipaat.com/blog/what-is-aws-route53/#no9
+A hosted zone is an Amazon Route 53 concept. A hosted zone is analogous to a traditional DNS zone file; it represents a collection of 
+records that can be managed together, belonging to a single parent domain name. All resource record sets within a hosted zone must 
+have the hosted zone's domain name as a suffix.
+
+
+AWS CloudFormation is a service that helps you model and set up your AWS resources so that you can spend less time managing those resources
+
+
+A Certification for Health Delivery System Case Management and Transitions of Care Professionals. The ACM Certification was created 
+by ACMA in 2005, and is designed specifically for health delivery system and transitions of care (TOC) case management professionals.
+
+
+An MX record specifies the names of your mail servers and, if you have two or more mail servers, the priority order. Each value for 
+an MX record contains two values, priority and domain name. An integer that represents the priority for an email server.
+
+
+Routing Policy  --> Multivalue answer routing distributes DNS responses across multiple IP addresses. If a web server becomes unavailable 
+after a resolver caches a response, a client can try up to eight other IP addresses from the response to avoid downtime
+
+
+An NS record (or nameserver record) is a DNS record that contains the name of the authoritative name server within a domain or DNS zone. 
+When a client queries for an IP address, it can find the IP address of their intended destination from an NS record via a DNS lookup.
+The NS records and A records are both used to provide DNS services. The difference between them is that the former define the servers 
+that provide DNS services for a domain name while the A records translate hostnames (such as www, FTP, mail) into IP addresses.
+
+The DNS 'start of authority' (SOA) record stores important information about a domain or zone such as the email address of the 
+administrator, when the domain was last updated, and how long the server should wait between refreshes. All DNS zones need an 
+SOA record in order to conform to IETF standards.
+
+An MX record specifies the names of your mail servers and, if you have two or more mail servers, the priority order. Each value for 
+an MX record contains two values, priority and domain name. An integer that represents the priority for an email server.
+A mail exchanger record (MX record) is a configuration that specifies which mail servers can accept email that's sent to your domain. 
+To have Amazon SES manage your incoming email, you need to add an MX record to your domain's DNS configuration.
+
+In Route53, a hosted zone is a container for managing the DNS records on a domain that uses Route53 as its DNS provider. 
+Route53 provides some features that other DNS providers may not have, such as the ability to use Alias records for AWS resources, 
+and configuring a private hosted zone for use with Amazon VPC.

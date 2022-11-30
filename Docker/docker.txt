@@ -1,0 +1,101 @@
+---------------------------------------------------------------------------------------------------------------
+DOCKER
+---------------------------------------------------------------------------------------------------------------
+24-11-22 - class 1
+---------------------------------------------------------------------------------------------------------------
+Docker is a software platform for building applications based on containers 
+---------------------------------------------------------------------------------------------------------------
+Containers & Virtual Machines:
+
+One of the goals of modern software development is to keep applications on the same host
+or cluster isolated from one another so they don’t interfere with each other’s operation or maintenance.
+
+Virtual Machines:
+One solution to this problem has been virtual machines, which keep applications on the same hardware 
+entirely separate, and reduce conflicts among software components and competition for hardware resources
+to a minimum. 
+
+But virtual machines are bulky each requires its own OS, so is typically gigabytes in size and 
+difficult to maintain and upgrade.
+
+Containers:
+Containers, by contrast, share the same underlying kernel and isolate applications 
+execution environments from one another. Due to this they are usually in megabytes and boot up instantly.
+---------------------------------------------------------------------------------------------------------------
+A container is a standalone unit of software that packages together applications with all its 
+dependencies and configurations.
+----------------------------------------------------------------------------------------------------------
+Docker Architecture:
+
+Docker daemon: It is also referred to as ‘dockerd’ and it accepts Docker API requests 
+and manages Docker objects such as images, containers, networks, and volumes. 
+It can also communicate with other daemons to manage Docker services.
+Note: A daemon is a service process that runs in the background and functionality to other processes.
+
+Docker Client: It is the way that enables users to interact with Docker. 
+It sends the docker commands to docker daemon. The Docker client can communicate 
+with more than one daemon.
+
+Docker Registry: It hosts the Docker images and is used to pull and push the docker images 
+from registry. Docker Hub is the public registry that anyone can use, 
+and Docker is configured to look for images on Docker Hub by default.
+
+Docker Host: It is the physical host on which Docker Daemon is running 
+and docker images and containers are created.
+----------------------------------------------------------------------------------------------------------Installation:
+
+Link: https://docs.docker.com/engine/install/ubuntu/
+
+Post Installation Steps:
+
+sudo usermod -aG docker $USER
+----------------------------------------------------------------------------------------------------------
+Docker Images:
+
+Docker is used to create, run and deploy applications in containers. 
+A Docker image contains application code, libraries, tools, dependencies and other files 
+needed to make an application run.
+
+In simple words a Docker image is an executable file, that creates a Docker container. 
+A Docker image is comparable to an AMI in AWS.
+
+Docker images are a reusable and can be deployed on any host. Developers can take the Docker image 
+from one project and use them in another. This saves the user time, because they do not have to 
+recreate an image from scratch.
+----------------------------------------------------------------------------------------------------------
+Docker Image Repository:
+
+Docker images can be stored in private or public repositories, 
+such as Docker Hub, Amazon Container Registry etc. 
+
+https://hub.docker.com/
+----------------------------------------------------------------------------------------------------------
+Commands:
+
+docker search <image-name> --> To search for a docker image on dockerhub.com
+
+docker pull <image-name>:<tag> --> To pull a docker image to local host
+docker images --> To list the images on local host
+
+docker rmi <image-name/image-ID> --> To remove a docker image
+----------------------------------------------------------------------------------------------------------
+Containers:
+
+Commands:
+
+docker run <image-name> --> To create a Container
+docker run -it <image-name> --> To create a container and interact with it
+docker run --name <container-name> <image-name> --> To create a container with a specific name
+
+docker ps --> To list the running Containers
+docker ps -a --> To list all the container
+
+docker rm <container-name/container-ID> --> To remove a container
+
+docker stop <container-name/container-ID> --> To stop a container
+docker stop --time=100 <container-name/container-ID> --> To stop a container after giving grace period of 100 seconds
+
+docker start <container-name/container-ID> --> To start a container
+docker start -i <container-name/container-ID> --> To start a container and attach to it
+----------------------------------------------------------------------------------------------------------
+
