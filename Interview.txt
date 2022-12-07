@@ -1,0 +1,8 @@
+https://www.simplilearn.com/tutorials/devops-tutorial/devops-interview-questions
+
+Name three important DevOps KPIs.
+The three important KPIs are as follows:
+
+Meantime to failure recovery - This is the average time taken to recover from a failure.
+Deployment frequency - The frequency in which the deployment occurs. 
+Percentage of failed deployments - The number of times the deployment fails.

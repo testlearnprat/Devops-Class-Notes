@@ -246,6 +246,11 @@ terraform untaint <resourcetype.resourcename> ---> to untaint a resource
 
 terraform state list --> to list all resouce created by terraform
 terraform state show <resourcetype.resourcename> --> to get information about a particular resource
+terraform refresh --> to update tfstate based on console changes
+terraform show -- > shows tfstate file
+terraform console --> opens console where u can run commands
+terraform apply --replace  --> (use it instead of taint(not recommended by terraform))
+
 
 To study :
 terraform templates
@@ -333,6 +338,7 @@ FUNCTIONS IN TERRAFORM   -- ${function_name}  example  -->
 "${join("seperator",var.name)}"  
 "${upper(var.users[0])}"  ,  "${lower(var.users[0])}"
 "${title(var.users[0])}"
+file --> to  print content of file
 Terraform does not allow you to create your own functions, so you're bound to using what is provided by default.
 
 
@@ -403,11 +409,57 @@ resource graphs, state management features and configuration files.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 how to recover from failed apply in terraform??
 
-The terraform force-unlock command can override the protections Terraform uses to prevent two processes from modifying state at the same time. You might need 
-this if a Terraform process (like a normal apply) is unexpectedly terminated (like by the complete destruction of the VM it's running in) before it can release 
-its lock on the state backend. Do not run this until you are completely certain what happened to the process that caused the lock to get stuck.
+The terraform force-unlock command can override the protections Terraform uses to prevent two processes from modifying state at the same 
+time. You might need this if a Terraform process (like a normal apply) is unexpectedly terminated (like by the complete destruction of 
+the VM it's running in) before it can release its lock on the state backend. Do not run this until you are completely certain what 
+happened to the process that caused the lock to get stuck.
 
-The terraform state pull command and the terraform state push command can directly read and write entire state files from and to the configured backend. 
+The terraform state pull command and the terraform state push command can directly read and write entire state files from and to the 
+configured backend. 
 You might need this for obtaining or restoring a state backup.
 
-Use the terraform workspace list, terraform workspace new, and terraform workspace delete commands to manage the available workspaces in the current working directory.
+Use the terraform workspace list, terraform workspace new, and terraform workspace delete commands to manage the available workspaces 
+in the current working directory.
+-------------------------------------------------------------------------------------------------------------------
+3306 --> database port
+27017 --> mongodb port
+--------------------------------------------------------------------------------------------------------------------
+Dynamic blog: To open multiple ports in security group
+dynamic "ingress" {
+for_each = [ 22.80.443]
+iterator = port
+content {
+	description = "TLS from VPC"
+	from_port = port.value
+	to port = port.value
+	protoc0l = "tcp"
+	cidr_blocks = ["0.0.0.0/0"]
+}
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+Terraform graph:
+The terraform graph command is used to generate a visual representation of either a configuration or execution plan. The output is in 
+the DOT format, which can be used by GraphViz to generate charts.
+
+terraform workspace list --> to list workspace
+terraform workspace show --> to see current workspace
+terraform workspace new <name> --> to create workspace
+rerraform worrkspace select <name> --> to switch workspace
+terraform workspace delete <name> --> to delete a workspace
+
+The Vault provider allows Terraform to read from, write to, and configure HashiCorp Vault. Important. Interacting with Vault 
+from Terraform causes any secrets that you read and write to be persisted in both Terraform's state file and in any generated plan files.
+
+Terragrunt is a thin wrapper around Terraform that provides extra tools for: Reducing repetition.
+
+Terraform vs Terragrunt vs Terraspace   ---  https://blog.boltops.com/2020/09/28/terraform-vs-terragrunt-vs-terraspace/
+
+
+Ways of storing credential  --> 
+1) Hard coding
+2) in aws CLI in .aws/credentials file --> 
+provider "aws" {
+region = "ap-south-1"
+shared_credentials_file = "/path of the credentials file in /.aws/credentials"
+3) setup environment variable

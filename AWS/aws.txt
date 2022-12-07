@@ -211,3 +211,89 @@ To have Amazon SES manage your incoming email, you need to add an MX record to y
 In Route53, a hosted zone is a container for managing the DNS records on a domain that uses Route53 as its DNS provider. 
 Route53 provides some features that other DNS providers may not have, such as the ability to use Alias records for AWS resources, 
 and configuring a private hosted zone for use with Amazon VPC.
+
+You are initially limited to launching 20 Amazon EC2 instances at any one time and a maximum VPC size of /16 (65,536 IPs).
+
+https://aws.amazon.com/vpc/faqs/#:~:text=How%20many%20subnets%20can%20I,case%20at%20the%20support%20center.
+
+VPC flow logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces in your VPC
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html
+
+Route 53 - ELB - ACM  - https://www.youtube.com/watch?v=JQP96EjRM98
+
+Create(register) a domain name in Route 53 --> create a hosted zone with that domain name --> Copy the NS records(4) to the domain registered -->  
+
+
+An SSL certificate is a bit of code on your web server that provides security for online communications. When a web browser contacts your 
+secured website, the SSL certificate enables an encrypted connection. It's kind of like sealing a letter in an envelope before sending it 
+through the mail. Why you need an SSL certificate. Websites need SSL certificates to keep user data secure, verify ownership of the website, 
+prevent attackers from creating a fake version of the site, and convey trust to users.
+HTTPS and SSL are similar things but not the same. HTTPS basically a standard Internet protocol that makes the online data to be encrypted and
+is a more advanced and secure version of the HTTP protocol. SSL is a part of the HTTPS protocol that performs the encryption of the data
+
+An SSL/TLS certificate is a digital object that allows systems to verify the identity & subsequently establish an encrypted network 
+connection to another system using the Secure Sockets Layer/Transport Layer Security (SSL/TLS) protocol.
+Transport Layer Security (TLS) is the successor protocol to SSL. TLS is an improved version of SSL. It works in much the same way as the 
+SSL, using encryption to protect the transfer of data and information. The two terms are often used interchangeably in the industry 
+although SSL is still widely used.
+
+A precursor to SSL/TLS handshake is the TCP handshake. An SSL/TLS handshake takes place only after a TCP connection has been opened. 
+SSL handshakes are nothing but a series of datagrams being exchanged and certain protocols agreed on to ensure the rest of the 
+communication is secure
+
+The handshake protocol uses the public key infrastructure (PKI) and establishes a shared symmetric key between the parties to ensure 
+confidentiality and integrity of the communicated data.
+
+A TLS handshake is the process that kicks off a communication session that uses TLS. During a TLS handshake, the two communicating sides 
+exchange messages to acknowledge each other, verify each other, establish the cryptographic algorithms they will use, and agree on session keys
+
+What Is an SSL/TLS Handshake? An SSL/TLS handshake is a negotiation between two parties on a network – such as a browser and web server – 
+to establish the details of their connection.
+
+
+An endpoint provides connection, data store type, and location information about your data store. AWS Database Migration Service uses 
+this information to connect to a data store and migrate data from a source endpoint to a target endpoint.
+
+An endpoint is a component of an API, while an API is a set of rules that allow two applications to share resources. Endpoints are the locations 
+of the resources, and the API uses endpoint URLs to retrieve the requested resources
+
+Endpoints are virtual devices that are horizontally scaled, redundant, and highly available VPC components. VPC endpoints allow 
+communication between instances in your VPC and services, without imposing availability risks or bandwidth constraints on your network 
+traffic
+
+Stickiness is a term that is used to describe the functionality of a load balancer to repeatedly route traffic from a client to a 
+single destination, instead of balancing the traffic across multiple destinations.
+By default, an Application Load Balancer routes each request independently to a registered target based on the chosen load-balancing 
+algorithm. However, you can use the sticky session feature (also known as session affinity) to enable the load balancer to bind a user's 
+session to a specific target. This ensures that all requests from the user during the session are sent to the same target. 
+This feature is useful for servers that maintain state information in order to provide a continuous experience to clients. 
+To use sticky sessions, the client must support cookies.
+https://docs.aws.amazon.com/elasticloadbalancing/latest/application/sticky-sessions.html
+
+To mount and create file system for new ebs :
+df -h 
+lsblk
+file -s /dev/xvdf
+mkfs -t xfs /dev/xvdf
+file -s /dev/xvdf
+create bakup directory
+mount /dev/xvdf /bakup
+umount /bakup
+df -h
+lsblk
+
+
+Mount efs to ec2:
+sudo apt-get update
+sudo apt-get install nfs-common
+mkdir efs
+copy nfs command from efs attach page
+https://www.youtube.com/watch?v=PHVthx8lG4g
+
+aws s3 sync <sourcepath> <s3path>  --> to copy from local to s3
+aws s3 sync <sourcebucket> <destination bucket>  --> to copy from one s3 bucket to anaother
+
+application orchestration  -- SNS, SQS, AWS STEP FUNCTION
+Analytics ,BIGDATA, MACHINE LEARNING   --->> AWS Athena, AWS EMR
+

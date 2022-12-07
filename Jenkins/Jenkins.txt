@@ -386,3 +386,5 @@ install that on the Jenkins controller.
 Download the plugin (*.hpi file) and put it in the following directory:
 <jenkinsHome>/plugins/
 Afterwards you will need to restart Jenkins.
+
+To change jenkkins home dir  ---> set env JENKINS_HOME
