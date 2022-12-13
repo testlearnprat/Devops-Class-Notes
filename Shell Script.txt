@@ -310,7 +310,7 @@ fi
 Debugging:
 
 set -x --> Prints all the commands and their values with arguments as they are executed
-set -e --> To stop a scripy immediately when a command exits with non zero status
+set -e --> To stop a script immediately when a command exits with non zero status
 set -t --> To exit after reading and executing only one command
 ---------------------------------------------------------------------------------------------------------------
 While Loop:
@@ -900,10 +900,32 @@ sudo cat /var/log/cron --> to check if cronjob is executed or not
 
 55 23 28-31 * * [[ "$(date --date=tomorrow +\%d)" == "01" ]] && myjob.sh
 
+sar --> It can be used to monitor Linux system's resources like CPU usage, Memory utilization, I/O devices consumption,
+ Network monitoring, Disk usage, process and thread allocation, battery performance, Plug and play devices,
+ Processor performance, file system and more
 
+curl -> to retreivev log
 
+grep -o -e <<<$prateek | wl -l   --> count number of e
 
+vi -r abc.txt --> to open a read only file.
 
+Disadvantages of shell script :
+Errors are frequent and costly, execution speed is low, complex tasks not suited
+unlike programming language , provides minimal data structure
+every time a shell command is executed, a new process is launched.
+set -u --> lists undefined variables. Without mentioning it wont show
+
+bash is dynamically types .. example x=5
+
+traceroute -- used for network debugging
+tracepath
+
+logrotate --> to maintain logs 
+lograte 30 --> after 30 days delete the logs
+
+logrotate is designed to ease administration of systems that generate large numbers 
+of log files. It allows automatic rotation, compression, removal, and mailing of log files. Each log file may be handled daily, weekly, monthly, or when it grows too large.
 
 
 

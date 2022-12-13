@@ -247,3 +247,11 @@ maven-failsafe-plugin is designed for running integration tests, and decouples f
 from actually running the tests.
 
 To skip a test - "-Dmaven.test.skip=true"
+
+git tag <tagname> -- to create tag
+git tag --> to list tags
+git push origin <tagname> --> to push to remote
+git push --tags --> to push all tags to remote
+git tag -d <tagname> -- to delete
+git checkout -b <branchname> <tagname> --> to create new branch out of tag
+git tag <tagname> <commitid> --> to create tag of that commit

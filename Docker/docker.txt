@@ -84,6 +84,14 @@ docker pull <image-name>:<tag> --> To pull a docker image to local host
 docker images --> To list the images on local host
 
 docker rmi <image-name/image-ID> --> To remove a docker image
+
+docker image prune -a -a --filter "until=12h" --> Here -a removes all the images created in the last 12 hours
+
+docker image prune --filter="label=unused"
+
+docker container stop $(docker container ls -aq) && docker system prune -af --volumes --> Use this command to completely wipe and restart Docker.
+
+https://middleware.io/blog/docker-cleanup/
 ----------------------------------------------------------------------------------------------------------
 Containers:
 
@@ -118,6 +126,7 @@ docker exec -it <container-name/container-ID> sh --> To attach to a running cont
 docker run -p <host-port>:<container-port> <image> --> To Publish a container port
 docker run -d -p 80:80 nginx --> To start a nginx container by publishing it on port 80
 docker run -it -p x:x --name <name> -v <volumepath:whattobecopied> --network <networkname> --restart=always registry:2 --> to keep it running always
+docker run --rm --> to remove container after stopping.
 
 docker top <container name> -- top process running in container
 docker inspect
@@ -175,7 +184,7 @@ Incase of multiple CMD instructions/commands, only the last one gets executed.
 Syntax:
 CMD ["echo", "Hello"]
 CMD ["sh", "script.sh"]
-
+ex: to pass ip, version, tag, etc during run
 Entrypoint is also used to set the default execution point once we run the docker image but whatever command that we pass during 
 docker run will be taken as an argument to the entry point commnad that is mentioned in Dockerfile. Incase of multiple entrypoint
 instructions only the last one entered is executed
@@ -190,7 +199,7 @@ docker run -d <imagename> -t   -->  Final command will be ls-lrt
 
 docker run -d --entrypoint  <command> <name> --> to replace the entire entry point just like CMD
 
-
+Run is executed during build image, cmd is executed during running image
 ------------------------------------------------------------------------------------
 COPY --> The copy instruction is used to copy files or directories from host machine to the containers
 Syntax: 
@@ -204,6 +213,18 @@ Syntax:
 ADD <source-path> <destination path>
 ADD <tar> <destination path>
 ADD --chown=<username:usergroup> <source-path> <destination path>
+
+LABEL Author="prateek"
+
+ONBUILD --> (not applicable for FROM nd LABEL)  -- can be prefixed to any other dockerfile instruction
+An ONBUILD command executes after the current Dockerfile build completes. ONBUILD executes in any child image derived FROM the current image. 
+Think of the ONBUILD command as an instruction the parent Dockerfile gives to the child Dockerfile.
+The ONBUILD instruction adds to the image a trigger instruction to be executed at a later time, when the image is used as the base for another build. 
+The trigger will be executed in the context of the downstream build, as if it had been inserted immediately after the FROM instruction in the downstream 
+Dockerfile.
+syntax : ONBUILD ADD www.xyz.url [real life : if some configuration is req for many containers, create this so it cab be run everytime.
+To set a ENV, WORKDIR, CMD everytime in child images use ONBUILD
+ONBUILD runs soon after FROM before any other instruction
 
 Assignment : 
 Docker command to copy files from host to a running container and vice versa.  -- > docker cp <filename> <containerid:path>  --> 
@@ -309,7 +330,7 @@ like a template. Docker images also act as the starting point when using Docker.
  (VM) environments.
 
 Best way to delete container --> Always first stop the container then delete it.
-
+------------------------------------------------------------------------
 Volumes:
 
 Bind Mount
@@ -347,7 +368,7 @@ Temporary volume will br stored in /var/lib/docker/overlay2
 
 VOLUMES  
 1) TEMPORARY VOLUME 
-2)PERSISTABT VOLUME
+2)PERSISTANT VOLUME
 
 PERSISTANT VOLUME :
 1)UNNAMED VOLUME -- DEFINED IN Dockerfile  -- using VOLUME
@@ -436,6 +457,7 @@ Docker container is an executable package of an application and its dependencies
 Docker port forwarding --> in -p <hostid:containerid> --> by changing host id we can forward it to be accessed by different port
 If we do not provide hostid  --> docker will assign a port --> we can see it in docker ps -a  --> add security group to that port
 
+docker update --cpus 0.8 --memory 400m --memory-reservation 200m eb1ec3
 ------------------------------------------------------------------------------------------------------------------------------------
 Docker Network --> By default Docker creates 3 network drivers called Bridge, Host and Null. The advantage of docker network is it 
 isolates the container from the internet and thereforesere as an extra layer of security
@@ -550,3 +572,86 @@ version: '3.0'
 
 A Docker Swarm is a group of either physical or virtual machines that are running the Docker application and that have been configured to join together 
 in a cluster. The activities of the cluster are controlled by a swarm manager, and machines that have joined the cluster are referred to as nodes.
+
+
+HealthCheck --> to determine the helth of a running container -- set it in Dockerfile --https://www.youtube.com/watch?v=VYV_TwWEqSg&list=PLVnWcdGotHcZ8jzNxTvZnqUP29r-9EF9b&index=10
+HEALTHCHECK [OPTIONS] CMD Command --> Check container health by running a command inside the container
+HEALTHCHECK NONE -->disable any healthcheck inherited from the base image
+
+The options that can appear before CMD are:
+
+--interval=DURATION (default: 30s)
+--timeout=DURATION (default: 30s)
+--start-period=DURATION (default: 0s)
+--retries=N (default: 3)
+
+Syntax:
+HEALTHCHECK --interval=5m --timeout=3s   CMD curl -f http://localhost/ || exit 1
+HEALTHCHECK CMD curl --fail http://localhost:port/ || exit 1
+
+Jenkins build parameterts --  first select environment, then stop build , promote the build, clear cache if required then start the service
+
+Best Practices to follow in Docker - https://dev.to/techworld_with_nana/top-8-docker-best-practices-for-using-docker-in-production-1m39
+
+nce you build the image to scan it for security vulnerabilities using the docker scan command. 🔍
+
+In the background Docker actually uses a service called snyk to do the vulnerability scanning of the images. The scan uses a database of vulnerabilities, which gets constantly updated.
+
+containerization is the process of packaging an application and its dependencies into a lightweight and portable container.
+
+Docker is a fully open source containerization platform that enables developers to package and deploy their applications in a lightweight and portable manner.
+
+Containerd also is a fully open source container runtime designed to be used as a building block for other container platforms, including Docker. - At its core, containerd is a daemon 
+that runs on a host machine and manages the lifecycle of containers
+
+Docker-Compose 
+
+version: "3.9"
+services:
+  frontend:
+    image: nginx
+    ports: 
+    - 80:80
+  backend:
+    build: .
+    volumes:
+    - /home/ubuntu/vol:/home/
+  database:
+    image: redis
+
+Commands:
+
+docker-compose up --> To create and start the containers
+docker-compose up -d --> To start in background
+docker-compose up -f <file-name> --> To use a specific file
+docker compose config  --> 
+docker-compose up -d --scale name=value
+
+docker-compose down --> To stop and remove the containers
+
+docker-compose ps --> To list the containers managed by docker-compose
+
+Link: https://github.com/artisantek/docker-compose-voting-app
+
+Container states : Created,running,Paused, Restarting,Exited,Dead
+
+docker events --> info about the activities in docker daemon --> to monitor docker in production
+
+what changes are expected in your docker compose file while moving it to production: 
+Remove volume bindings
+Binding to different ports on the host
+specify a restart policy
+add extra service like log aggregator
+
+docker save - The 'docker save' is used to save one or more than one image to a tar archive. It includes all parent layers, and all 
+tags or versions. It is by default streamed to STDOUT, however, we can write to a file, instead of STDOUT by specifying a flag
+syntax : docker image save <imagename> > <tarfilename>  --> to convert a particular image to tar
+docker image save ubuntu  --> to convert all ubuntunimages in a single tar
+
+docker load -  Load an image or repository from a tar archive (even if compressed with gzip, bzip2, or xz) from a file or STDIN.
+syntax : docker image load  < <tarfilename>
+docker image history <imagename>  --> to give history of the image
+
+docker container export <contid> > <tarfilename> --> to convert a container to a image (tar) (excluding volume)...no layers
+ 
+docker image import <tarfilename> <newimagename> -->to untar and create image from tar

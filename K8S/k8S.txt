@@ -1,0 +1,85 @@
+k8 developed by google, maintained by cncf
+
+1)Bare metal cluster
+2)Managed k8S service (AKS,EKS)
+
+ekibit concept --> to choose new master if master goes down
+
+TCP	Inbound	6443		Kubernetes API server		All
+TCP	Inbound	2379-2380	etcd server client API		kube-apiserver, etcd
+TCP	Inbound	10250		Kubelet API			Self, Control plane
+TCP	Inbound	10259		kube-scheduler			Self
+TCP	Inbound	10257		kube-controller-manager		Self
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Installing k8 basre metal cluster:
+1. Swap memory should be disabled for k8 to run
+2. Downloading necessary packages , keys , repos
+3. Install docker (containner docker)
+4. C group issue fix between docker k8
+5. Install k8 master components 
+
+
+C group --> to limit how much container can use
+Name space --> to limit how much a container can see
+
+kubectl version
+kubeadm version 
+
+To set up master -
+kubeadm init --> to initialize the server as master -- setups all master components (api server, etcd, scheduler, controller)
+
+We will get below info 
+kubeadm join 172.31.36.52:6443 --token fm1a1h.wt7x53cmt31z4plp \
+        --discovery-token-ca-cert-hash sha256:8a590e40c84dfacd814c06c8bec4749c9ba9c43e046a9cd32b3b068da2350aba
+
+Then switch to ubuntu user and run configure commands to athunticate user to use certificates  --> mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+config file is important to authenticate the user 
+
+
+Run cli network commands to set up network -- view network assigns different ips for every pod
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
+kubectl apply -f "https://cloud.weave.works/k8s/v1.13/net.yaml"
+kubectl get nodes
+
+------------------------------------------------------------------------------------
+
+To initialize worker node:
+launch instance...install k8s
+switch to root user
+run kubeadm join
+
+example for multiple containers in a pod -- init containers in database
+
+At any given time, a Kubernetes node can be in one of the following states:
+1)Ready—able to run pods.
+2)NotReady—not operating due to a problem, and cannot run pods.
+3)SchedulingDisabled—the node is healthy but has been marked by the cluster as not schedulable.
+4)Unknown—if the node controller cannot communicate with the node, it waits a default of 40 seconds, and then sets the node status to unknown.
+
+REAsons for orchestration tools --
+1) to avoid single point of failure
+2) to keep the containers up 24*7 / replace dead with new
+3) auto scaling
+
+Need of pod :
+1) k8 supports multiple container run time
+2)u can set a policy to maintain a container
+3)multiple container -->tightlycoupled microservices like db
+
+kubectl run --> to create pod, deployment, replicaset
+
+kubectl explain pod --> to see version and kind and other 
+
+kubectl label pod <podname> key=value --> to label a pod
+kubectl label --overwrite pod <podname> key=value --> to rename label a pod
+kubectl label pod --all <podname> key=value
+kubectl get pods --show-label 
+kubectl delete pods --all --> to delete all pods
+
+kubectl explain pod --recursive |less 
+
+kubectl drain --> to remove everything in worker node
+kubectl delete nod -- to delete nod 
