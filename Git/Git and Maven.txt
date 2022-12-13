@@ -76,6 +76,9 @@ Git class-3 (26.10.2022)
 17. git diff --staged Head <filename> --> diff between last commit n staged ares
 18. git diff <branch1> <branch2> --> diff between two branch
 19. git diff master url <branch name> --> diff between local n remote repo
+20. git clean --> remove untracked files
+21. git clean -n --> list untracked files
+22. git clean -n -d --> list untracked dir/files
 
 In .git all the information will be stored.
 A git submodule is a record within a host git repository that points to a specific commit in another external repository
