@@ -48,7 +48,8 @@ kubectl get deploy -->
 kubectl delete deploy --> to delete controller
 kubectl apply -f test.yml --> to start the deployer
 kubectl get rs
-kubectl scale deploy nginx-deployment --replicas 5
+kubectl scale deploy nginx-deployment --replicas=5
+
 ---------------------------------------------------------------------------------------------------------------
 
 Manifest file fields:
@@ -58,11 +59,11 @@ kubectl api-versions --> to list api versions
 kubectl api-resources --api-group <api-version-name> --> to check the objects that can be created by a particular version
 
 kind:
-It specifies the type of k8 object to be created. It can be pod, service etc
+It specifies the type of k8 object to be created. It can be pod, service , deploy, replicaset etc
 ex: pod , service, deployment etc
 
 metadata:
-It is used to set information about the objects like name, namespace-under which the object will be running etc
+It is used to set information about the objects like name,labels, namespace-under which the object will be running etc
 
 spec: 
 It consists of core information i.e the desired state of the object 
@@ -73,7 +74,7 @@ ex:
 labels:
   app: nginx
   os: ubuntu
-
+kubectl get pods -l <labels> --> to display pods with a label
 
 selectors: 
 They are used to identify the k8 objects using their labels. 
@@ -84,7 +85,9 @@ ex: app = nginx , os = ubuntu
 ex: app in (nginx, tomcat, jenkins) , environment in (dev, test, prod)
 kubectl get pods -l 'app in (dev, test, prod)'
 
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
 CONTROLLERS:
 
 Replica sets/ Replication controller
@@ -152,7 +155,7 @@ spec:
         - containerPort: 80
 
 Commands:
-
+kubectl set image deploy <deployname> <containername:image> --record
 kubectl set image deploy nginx-deploy nginx=nginx:1.14 --record --> To update the image using Deployment Controller
 
 kubectl rollout history deploy nginx-deploy --> To check the total recorded hostory of the Controller
@@ -185,7 +188,9 @@ Pod Phases/Pod Lifecycle: The phase of a pod  is a simple high level summary ehe
 3)Succeeded --> All the containers in the pod  have terminated in successs and will not be restarted 
 4)Failed --> All the containers in the pod have terminated but atleast one container has terminated in failure i.e the container exited with non zero status
 5) Unknown --> The pod goes to  unknown state if the state of the pod could not be obtained due to an error in communicating with node where pod was running 
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 PROBES: Probes are the actions performed by the kubelet which help in monitering and checking the condition of the applications inside the pods.
 They are defined at the container level and we can define multiple probes in the manifest file.
@@ -293,5 +298,477 @@ Startup Probe [1.16]:
 Both startup and livenessprobe have same properties i.e incase of failure they restart the container.
 If both strtup and liveness probe are set, after container creation kubelet will execute startup probe first, if startup probre succeeds than liveness probe takes over further action. if startup probe fails the pod is restarted and the cycle is repeated. It is an extra layer of check for the pods
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SERVICES: In k8 pods can communicate with each other by default without any configuration by using internal ip address assigned by kubeproxy.
+But these ip address are volatile in nature.
+A k8 service groups a series of pods together and makes them accesseble through a common host name or ip address.
+
+Need for k8 service:
+1) since pods are short lived i.e the pod dies and a new pod comes up the ip address for that pod is most likely to change therefore we cannot relay on the pods ip address.
+2)pods can be scaled up and there is no way to know the new ip address of the pod in advance.
+3)we cannot use the ip address of the pod if we want to connect to the application from the outside world
+
+Types of service:
+There are 4 types of services: Clusterip, nodeport, loadbalancer and headless.
+
+1)Cluster ip: It is the default service type in k8, and it exposes the pods internally within the cluster, it enables pods to communicatee to other pods inside the cluster through a common ip and dns.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cip
+spec:
+  type: ClusterIP
+  ports:
+  - targetPort: 8080
+    port: 8080
+  selector:
+    app: helloworld
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+NodePort: with NodePort service we can expose pods in the cluster to the outside world.
+
+Range: 30000-32767
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: np
+spec:
+  type: NodePort
+  ports:
+  - targetPort: 8080
+    port: 8080
+    nodePort: 31000
+  selector:
+    app: helloworld
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Load Balancer: Load balancer service will create an internal k8 service that is connected to a load balancer provided by any cloud provider. 
+ with load balancer service node port and and cip services are created automatically.
+Load balancers are used as the ip of k8 master n worker node are not long lived
+-------------------------------------------------------------------------------------------------------------------------------------
+Headless service: Headless service is the same as the default cluster ip but lacks proxying(do not have constant ip) allowing us to connect to a pod directly.
+Headless service will return all the ip of the pods which are associated with it.
+use ngnix-dp-0.hl to connect to that pod  -- dns name
+apiVersion: v1
+kind: Service
+metadata:
+   name: hl
+spec:
+  clusterIP: None
+  ports:
+  - targetPort: 80
+    port: 80
+  selector:
+    app: nginx
+---------------------------------------------------------------------------------------------------------------
+Image: artisantek/k8s-helloworld
+---------------------------------------------------------------------------------------------------------------
+
+Manually Scheduling Pods: 
+By default pod scheduling in k8 is handled by scheduler. The scheduler ensures that the right node is selected by checking the resources available on the worker nodes, however there are scenarios where you want your pods to end up on certain specific nodes
+1)To schedule pods on nodes with speficic resources available on them.
+2)To co-locate a pod from one service with a a pod from another service on the same node due to strong dependency with eachother
+
+1)NodeSelector: It is the simplest way of scheduling the pods on to a particular node by using the node labels.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels: 
+    app: nginx
+spec:
+  nodeSelector:
+    spec: high
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+---------------------------------------------------------------------------------------------------------------
+Commands:
+kubectl get nodes --show-labels --> to display all the labels associated with node
+kubectl label node <nodename> <key=value> --> to add label to a node
+kubectl label node<nodename> <key>-   --> to remove a label
+
+2) Affinity - The affinity greatly expands the node selector by adding soft and hard scheduling rules. If the soft rule is not met the scheduler can still schedule the pods on to some node.
+
+Hard rule[requiredDuringScheduling]: Rules must be met compulsorily for a pod to be schdules on a node.
+Soft Rule[Preferred during Schduling]: Scheduler will try to schedule the pods based on the preferences defined, if scheduler doesnot find any matching node , it will schedule the pod to any nodes.
+
+IgnoredDuringExecution: If labels on a node change during run time such that the node ceizes to satisfy affinity rules the pods will still continue to run on the node.
+
+Types:
+a. nodeAffinity: like node selector we can use node affinity to schedule pods on specific nodes.
+
+1. Hard Rule
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels: 
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: spec
+            operator: In
+            values: 
+            - high
+            - medium
+---------------------------------------------------------------------------------------------------------------
+2. Soft Rule
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels: 
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: spec
+            operator: In
+            values:
+            - type
+      - weight: 3
+        preference:
+          matchExpressions:
+          - key: spec
+            operator: In
+            values:
+            - high
+---------------------------------------------------------------------------------------------------------------
+
+Kubernetes Operators manage application logic and are part of the Kubernetes control plane. As such, they are controllers that execute loops to check 
+the actual state of the cluster and the desired state, acting to reconcile them when the two states are drifting apart.
+
+kubernetes security to restrict communication between pods -- use rbac to define which pod communicate with wch other, pod in namespaces A dont communicate 
+with namespace B... create policies make previlazed container...turn on audit logging
+
+to get central logs from pod -- using node level logging agaent , grafana dashboard , streamingsidecar container
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+POD AFFINITY / ANTI AFFINITY
+With pod affinity and antiaffinity we can define whether a pod or should not be schedules on to a particular node based on lebels of or=ther pods already running on that node
 
 
+Deploy DB with nodeSelector:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      name: db
+      labels:
+        app: db
+    spec:
+      nodeSelector:
+        spec: high
+      containers:
+      - name: db
+        image: nginx
+        ports:
+        - containerPort: 80
+---------------------------------------------------------------------------------------------------------------
+Deploy Web app with Anti-Affinity
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      name: web
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: nginx
+        ports:
+        - containerPort: 80
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web
+            topologyKey: kubernetes.io/hostname
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - db           
+            topologyKey: kubernetes.io/hostname
+---------------------------------------------------------------------------------------------------------------
+Deploy Redis App with Affinity:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      name: redis
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: nginx
+        ports:
+        - containerPort: 80
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - redis
+            topologyKey: kubernetes.io/hostname
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web           
+            topologyKey: kubernetes.io/hostname
+---------------------------------------------------------------------------------------------------------------
+
+Taints and tolerations: Affinity is a property of pods that attracts them to a set of nodes while the taints are the opposite. They allow a node to repel a set of pods
+If a pod must be deployed to a tainted node tolerations are added to the pod definition file.
+
+kubectl taint node <node-name> <key>=<value>:<taint-action> --> To taint a node
+kubectl taint node <node-name> <key>=<value>:<taint-action>- To untaint a node
+
+Taint Actions:
+1)No schedule --> unless a pod has matching tolerations it wont be schedule onto the node.
+2)prefernoschedule --> it is the soft version of no schedule.
+3)noexecute --> k8s will immediately evict all the pods without the matching tolerationsfrom the node. 
+
+Pod With Tolerations:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+  tolerations:
+  - key: taint
+    operator: Equal
+    value: w1
+    effect: NoSchedule
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+Kuberenetes Volumes:
+
+Simple Mount:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  volumes:
+  - name: simple-mount
+    hostPath:
+      path: /tmp/simplemount/
+      type: DirectoryOrCreate
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - mountPath: /home
+      name: simple-mount
+ 
+Ephemeral volumes: These are short lived , they are tightly dependent with the lifetime of the pods and they are deleted if the pods goes down.
+
+Persistant volumes: Persistent volumes are meant for long term storageand are independent of the pods lifecycle.
+Types of persistent volumes: Static PV and Dynamic PV
+
+In static provisioning an admin manually creates pools of persistant volumes
+PV --> PVC --> mount it to a pod
+
+PVC:  we can use the persistentt volume pools created by an administrator. Persistent volume claims are a way for a developer to request storage for the application.
+
+Persistent Volume:
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv
+spec:
+  reclaimPolicy: Recycle
+  capacity:
+    storage: 2Gi
+  hostPath:
+    path: /tmp/simplemount/
+  storageClassName: static
+  accessModes:
+  - ReadWriteOnce
+---------------------------------------------------------------------------------------------------------------
+Persistent Volume Claim:
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc
+spec:
+  storageClassName: static
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---------------------------------------------------------------------------------------------------------------
+Mounting PVC to Pod
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  volumes:
+  - name: persistent-volumes
+    persistentVolumeClaim:
+      claimName: pvc
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - mountPath: /home
+      name: persistent-volumes
+---------------------------------------------------------------------------------------------------------------
+
+
+Dynamic Volumes: In dynamic volumes we configure storage classess to dynamically create persistant volumes.
+The main goal of storage class is to eliminate the need for administrators to preprovision storage.
+---------------------------------------------------------------------------------------------------------------------------------------
+The access modes:
+
+ReadWriteOnce -- the volume can be mounted as read-write by a single node 
+ReadOnlyMany -- the volume can be mounted as read-only by many nodes 
+ReadWriteMany -- the volume can be mounted as read-write by many nodes
+---------------------------------------------------------------------------------------------------------------
+Reclaim Policies:
+Retain: When the PersistentVolumeClaim is deleted, the PersistentVolume will still exists, 
+and the volume is considered "released". But it is not yet available for another claim because the 
+previous claimant's data remains on the volume. An administrator must manually reclaim the volume.
+
+Delete: Delete reclaim policy removes both the PersistentVolume object from Kubernetes, 
+as well as the associated storage
+
+Recycle: recycle reclaim policy performs a basic scrub (rm -rf /thevolume/*) on the volume 
+and makes it available again for a new claim.
+---------------------------------------------------------------------------------------------------------------
+Assignments:
+1. Read about Pod failures
+2. Read about emptyDir Volume Mount
+3. Read about init containers and side car containers
+
+https://kukulinski.com/10-most-common-reasons-kubernetes-deployments-fail-part-1/
+https://kukulinski.com/10-most-common-reasons-kubernetes-deployments-fail-part-2/
+
+Most Common Reasons Kubernetes Deployments Fail/Pod Fail
+1.ImagepullBackoff - missing image/tag or permission to pull the image
+2.CrashLoopBackOff - application crashing after launch - check logs
+3.RunContainerError - missing config 
+4.ContainerCreating  - missing secret
+5.Exceeding CPU/Memory Limits
+6.Resource Quotas
+7.Insufficient Cluster Resources
+8.PersistentVolume fails to mount
+9.Validation Errors
+10.Container Image Not Updating
+---------------------------------------------------------------------------------------------------------------
+
+Sidecar containers are containers that are needed to run alongside the main container. The two containers 
+share resources like pod storage and network interfaces. The sidecar containers can also share storage volumes 
+with the main containers, allowing the main containers to access the data in the sidecars.
+
+Init containers run before applications containers run in a pod, and sidecar containers run alongside application 
+containers in a pod. One use for init containers is to bootstrap Appian with RDBMS/JDBC drivers not included in the 
+Webapp Docker image (for example, MySQL or IBM Db2).
+
+emptyDir are volumes that get created empty when a Pod is created. While a Pod is running its emptyDir exists. 
+If a container in a Pod crashes the emptyDir content is unaffected. Deleting a Pod deletes all its emptyDirs
+A Volume of type emptyDir that lasts for the life of the Pod, even if the Container terminates and restarts. 
+If a container in a Pod crashes the emptyDir content is unaffected. All containers in a Pod share use of the emptyDir volume . 
+Each container can independently mount the emptyDir at the same / or different path.
+
+A volume always keeps data in /var/lib/docker/volumes, while mount points can be created wherever we want. 
+If a container which is assigned a mount point is also assigned a volume then all data from the mount point is copied to the 
+volume automatically, while the opposite is not true
+
+Redhat based orchestration tool is openshift(UI based)
+
+Docker uses c-groups to set cpu and memory limitations to containers  ---how much container can use
+namespace -- how much container can see --- to isolate container
+in k8 1.22 and above mismatch in cgroup betwwen docker n k8
+
+Weavenetworks -- makesure pods have different ip and manages network -- assigns subnet
+
+kubeproxy manages pod network internally and externally

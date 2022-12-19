@@ -83,3 +83,60 @@ kubectl explain pod --recursive |less
 
 kubectl drain --> to remove everything in worker node
 kubectl delete nod -- to delete nod 
+
+kubectl get pods --show-labels
+
+kubectl edit pod  <podname>  --> to edit created pod
+
+k8 supports 3 types of object management:
+1)imperative commands
+2)imperative object configuration --- kubectl create  
+3)declarative object configuration  --- kubectl apply
+https://www.youtube.com/watch?v=3uy7BSCj0I0&list=PL6XT0grm_TfhFKUv_KI_DTVr0TCincl1r&index=14
+
+
+kubectl delete -f <filename>  --> delete all resource related to that file
+
+kubectl diff -f <filename> --> difference between original and new file
+
+set env in yaml file under spec: containers:
+example:
+env:
+- name: prateek
+  value: xyz
+
+kubectl exec <podname> -c <container name> env --> to list env
+
+kubectl exec <podname> -c <containername> -it bash --> to attach to the container
+kubectl exec <podname> -c <containername> -it ls / --> to list files in container
+
+netcat -l -p 8000  --> to open port 8000 in container -->first exec to container using kubectl exec command
+
+All the containers in a pod share same network 
+
+Initcontainer --> it will be initiated first in a pod...after its completion other container will start    
+
+kubectl expose pod <podname> --port=<port> --target-port=<port> --name <clusteripname> -->
+
+kubectl explain service
+
+kubectl ex plain rs --recurssive |less
+
+CNI - container networking interface --> to manage pod to pod communication....using weavenet
+
+qorum concept -- odd number of masters - high availability fashion
+
+config file --> $HOME/.kube/config  --> to connect to a cluster in different environments
+config file will have clusters,contexts,users
+
+A container runtime, also known as container engine, is a software component that can run containers on a host operating system.
+https://www.aquasec.com/cloud-native-academy/container-security/container-runtime/
+
+why one container is prefered in a pod: all the containers are tightly packed...given same ip by kube proxy..given one identity...if one goes down it will effect other containers.
+
+The reason behind using pod rather than directly container is that kubernetes requires more information to orchestrate the containers like restart policy , liveness probe , readiness probe .
+
+Also, Kubernetes supports the multi-container pod which is mainly requires for the sidecar containers mainly log or data collector 
+or proxies for the main container. Another advantage of multi-container pod is they can have very tightly coupled application container 
+together sharing the same data, same network namespace and same IPC namespace which would not be possible if they choose for directly 
+using container without any wrapper around it.

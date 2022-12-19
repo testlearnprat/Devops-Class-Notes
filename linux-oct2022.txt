@@ -727,7 +727,16 @@ Apache Tomcat is a web container. It allows the users to run Servlet and JAVA Se
 
 Both su and sudo elevate privileges assigned to the current user. The main difference between the two is that su requires the password of the target account, while sudo requires the password of the current user
 
+cd doesnt work with sudo
 
 
+umask 444  --> to change umask -- valid for session
 
- 
+root user default umask -- 022
+other users default 002
+umask cannot give executable perm
+
+chgrp <usename> <groupname> --> to change group
+
+find command is recurssive in nature
+

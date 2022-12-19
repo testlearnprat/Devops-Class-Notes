@@ -655,3 +655,9 @@ docker image history <imagename>  --> to give history of the image
 docker container export <contid> > <tarfilename> --> to convert a container to a image (tar) (excluding volume)...no layers
  
 docker image import <tarfilename> <newimagename> -->to untar and create image from tar
+
+docker compose is a additional plugin need to be installed
+frontend-backend-cache-db  full stack of application can be launched in one command
+docker-compose version 3.9
+ngninx - port 80
+redis -- db and cache
