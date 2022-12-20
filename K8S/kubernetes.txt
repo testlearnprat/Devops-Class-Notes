@@ -39,6 +39,8 @@ kubectl get pods -l <label>  --> to list pods with such labels
 ex: kubectl get pods -l env=dev
 kubectl get pods -n <namespacename>  --> to list pods in namespace
 
+kubectl token create --print-join-command  --> create kubeadm join token command
+
 
 kubectl describe <object-kind> <name> --> To see information about a kubernetes object
 kubectl delete <object-kind> <name> --> To delete a kubernetes object
@@ -370,7 +372,8 @@ Image: artisantek/k8s-helloworld
 ---------------------------------------------------------------------------------------------------------------
 
 Manually Scheduling Pods: 
-By default pod scheduling in k8 is handled by scheduler. The scheduler ensures that the right node is selected by checking the resources available on the worker nodes, however there are scenarios where you want your pods to end up on certain specific nodes
+By default pod scheduling in k8 is handled by scheduler. The scheduler ensures that the right node is selected by checking the resources 
+available on the worker nodes, however there are scenarios where you want your pods to end up on certain specific nodes
 1)To schedule pods on nodes with speficic resources available on them.
 2)To co-locate a pod from one service with a a pod from another service on the same node due to strong dependency with eachother
 
@@ -411,7 +414,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: nginx
-  labels: 
+   labels: 
     app: nginx
 spec:
   containers:
@@ -587,6 +590,8 @@ spec:
             topologyKey: kubernetes.io/hostname
 ---------------------------------------------------------------------------------------------------------------
 
+Redis and memecached  -- > cache application used for low latency along with web apps
+
 Taints and tolerations: Affinity is a property of pods that attracts them to a set of nodes while the taints are the opposite. They allow a node to repel a set of pods
 If a pod must be deployed to a tainted node tolerations are added to the pod definition file.
 
@@ -617,7 +622,9 @@ spec:
     effect: NoSchedule
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
+kubectl delete deploy --all
 ------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------
 
 Kuberenetes Volumes:
 
@@ -644,7 +651,7 @@ spec:
  
 Ephemeral volumes: These are short lived , they are tightly dependent with the lifetime of the pods and they are deleted if the pods goes down.
 
-Persistant volumes: Persistent volumes are meant for long term storageand are independent of the pods lifecycle.
+Persistant volumes: Persistent volumes are meant for long term storage and are independent of the pods lifecycle.
 Types of persistent volumes: Static PV and Dynamic PV
 
 In static provisioning an admin manually creates pools of persistant volumes
@@ -712,13 +719,14 @@ The access modes:
 ReadWriteOnce -- the volume can be mounted as read-write by a single node 
 ReadOnlyMany -- the volume can be mounted as read-only by many nodes 
 ReadWriteMany -- the volume can be mounted as read-write by many nodes
+ReadwriteOncePod -- 
 ---------------------------------------------------------------------------------------------------------------
 Reclaim Policies:
 Retain: When the PersistentVolumeClaim is deleted, the PersistentVolume will still exists, 
 and the volume is considered "released". But it is not yet available for another claim because the 
 previous claimant's data remains on the volume. An administrator must manually reclaim the volume.
 
-Delete: Delete reclaim policy removes both the PersistentVolume object from Kubernetes, 
+Delete: Delete reclaim policy removes both the Persistent Volume object from Kubernetes, 
 as well as the associated storage
 
 Recycle: recycle reclaim policy performs a basic scrub (rm -rf /thevolume/*) on the volume 
