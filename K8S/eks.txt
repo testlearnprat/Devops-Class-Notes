@@ -1,0 +1,109 @@
+EKS Cluster [Windows]: 
+
+Step 1: Install AWS ClI
+https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html
+
+Step 2: Open cmd.exe as Administrator
+
+Step 3: Instal Chocolatey
+https://docs.chocolatey.org/en-us/choco/setup
+
+Step 4: Install eksctl
+choco install -y eksctl
+
+Step 5: Install kubectl
+choco install kubernetes-cli
+
+Step 6: Create Cluster
+eksctl create cluster \
+ --name my-cluster \
+ --version 1.23 \
+ --with-oidc \
+ --nodegroup-name worker \
+ --region ap-south-1 \
+ --node-type t2.medium \
+ --managed \
+ --ssh-access \
+ --ssh-public-key oct-2022 
+ 
+Setting Kube Config File:
+aws eks --region ap-south-1 update-kubeconfig --name my-cluster
+
+Cleanup:
+eksctl delete cluster --name my-cluster --region ap-south-1
+----------------------------------------------------------------------------------------------------------
+Kubernetes Dashboard [UI]:
+
+Step1: Install Kubernetes Metric Server[eks]
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+Step2: Install Kubernetes Dashboard
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+
+Alternatively [https://github.com/kubernetes/dashboard]
+
+Step3: Run command line proxy
+kubectl proxy
+
+Step4: Access the Dashboard
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+Note: The UI can only be accessed from the machine where the command is executed
+
+Cleanup:
+kubectl delete ns kubernetes-dashboard
+----------------------------------------------------------------------------------------------------------
+Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster. 
+Traffic routing is controlled by rules defined on the Ingress resource.
+
+For the Ingress resource to work, the cluster should have an ingress controller running. 
+The famous ingress controllers are Nginx, ALB and GCE
+
+Deploy Ingress Controller [https://kubernetes.github.io/ingress-nginx/deploy/]:
+
+Step1: Install Helm
+https://helm.sh/docs/intro/install/
+
+Step2: Deploy Ingress Controller
+helm upgrade --install ingress-nginx ingress-nginx \
+  --repo https://kubernetes.github.io/ingress-nginx \
+  --namespace ingress --create-namespace
+
+Repo Link: https://github.com/artisantek/kubernetes-ingress
+
+Cleanup:
+kubectl delete ns ingress
+----------------------------------------------------------------------------------------------------------
+Deploy EBS CSI Driver [Dynamic Volumes]:
+
+Step1: Find the roles attached to the Worker Nodes:
+kubectl -n kube-system describe configmap aws-auth
+
+Step2: Attach IAM Policy "AmazonEBSCSIDriverPolicy" to the role
+
+Step3: Deploy CSI Driver
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
+
+Example:
+
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: dynamic
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2 
+  fsType: ext4
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc
+spec:
+  storageClassName: dynamic
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+----------------------------------------------------------------------------------------------------------

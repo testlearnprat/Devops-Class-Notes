@@ -140,3 +140,65 @@ Also, Kubernetes supports the multi-container pod which is mainly requires for t
 or proxies for the main container. Another advantage of multi-container pod is they can have very tightly coupled application container 
 together sharing the same data, same network namespace and same IPC namespace which would not be possible if they choose for directly 
 using container without any wrapper around it.
+
+Various Types of Deployment Strategies   -- https://www.opsmx.com/blog/advanced-deployment-strategies-devops-methodology/
+Blue/Green Deployment. In this type of deployment strategy, the new version of the software runs alongside the old version. ...
+Canary Deployment. ...
+Recreate Deployment. ...
+Ramped/Rollout Deployment. ...
+Shadow Deployment. ...
+A/B Testing Deployment.
+
+
+
+cluster autoscaler
+horizontal autoscaling
+vertical autoscaling
+
+CrashLoopBackOff:
+Misconfigurations: Like a typo in a configuration file.
+A resource is not available: Like a PersistentVolume that is not mounted.
+Wrong command line arguments: Either missing, or the incorrect ones.
+Bugs & Exceptions: That can be anything, very specific to your application.
+You tried to bind an existing port.
+The memory limits are too low, so the container is Out Of Memory killed.
+Errors in the liveness probes are not reporting the Pod as ready.
+Read-only filesystems, or lack of permissions in general.
+
+
+In Kubernetes, a HorizontalPodAutoscaler automatically updates a workload resource (such as a Deployment or StatefulSet), with the aim of automatically scaling the workload to match demand.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+Cluster Autoscaler (CA): adjusts the number of nodes in the cluster when pods fail to schedule or when nodes are underutilized.
+Horizontal Pod Autoscaler (HPA): adjusts the number of replicas of an application.
+Vertical Pod Autoscaler (VPA): adjusts the resource requests and limits of a container.
+
+https://www.kubecost.com/kubernetes-autoscaling/kubernetes-cluster-autoscaler/
+
+The Cluster Autoscaler automatically adds or removes nodes in a cluster based on resource requests from pods. The Cluster Autoscaler doesn’t 
+directly measure CPU and memory usage values to make a scaling decision. Instead, it checks every 10 seconds to detect any pods in a pending 
+state, suggesting that the scheduler could not assign them to a node due to insufficient cluster capacity.
+
+The AWS Load Balancer Controller manages AWS Elastic Load Balancers for a Kubernetes cluster. 
+The controller provisions the following resources: An AWS Application Load Balancer (ALB) when you create a Kubernetes Ingress . 
+An AWS Network Load Balancer (NLB) when you create a Kubernetes service of type LoadBalancer .
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Disaster Recovery (DR) is the amount of impact an organization can take during a disaster (disaster = any service-interrupting event, 
+like a power surge, for example). There are 2 key metrics that define the impact: RTO (Recovery Time Objective) and RPO (Recovery Point Objective).
+AWS Elastic Disaster Recovery (AWS DRS) minimizes downtime and data loss with fast, reliable recovery of on-premises and cloud-based applications.
+
+
+Amazon EKS supports IAM Roles for Service Accounts (IRSA) that allows cluster operators to map AWS IAM Roles to Kubernetes Service Accounts. This 
+provides fine-grained permission management for apps that run on EKS and use other AWS services.
+
+Init containers can contain utilities or custom code for the setup that are not present in an app image.
+They can be given access to Secrets that app containers cannot access.
+Clone a Git repository into a Volume
+It can be used to wait for a service to start that is to be used by the main app
+An init container is a good candidate for delaying the application initialization until one or more dependencies are available.
+
+configmaps and secrets set up database endpoints
+

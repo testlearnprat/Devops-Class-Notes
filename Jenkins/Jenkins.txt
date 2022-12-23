@@ -299,7 +299,7 @@ username: admin
 password: password
 ---------------------------------------------------------------------------------------------------------------
 SonarQube:
-
+Instalation prerequisite: java, postgress(for expandable in all env)not available in free version, sudo privilage
 URL: https://github.com/artisantek/sonarqube-installation-ubuntu.git
 
 Initial Setup
@@ -308,6 +308,20 @@ username: admin
 password: admin
 
 sonarqube scanner for jenkins - plugin 
+
+-create project , project-key, token in sonarqube
+-manage jenkins-manage credentials -Add credentials in jenkins
+-manage jenkins - configure system - sonarqubeservers- env variables- add sonarqube - add sonar url:9000
+-manage jenkins - global toool config -- add sonarcubescanner
+--manage jenkins - configure system - global properties - add env - add the url, login for security from jenkins file
+in jenkinsfile :
+stage('sonarqube analysis') {
+	steps {
+		withSonarQubeEnv('sonarqube') {
+			sh 'mvn sonar:sonar'
+}
+}
+https://www.youtube.com/watch?v=FOSVmqA0wpw
 ---------------------------------------------------------------------------------------------------------------
 Jenkinsfile:
 

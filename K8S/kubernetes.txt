@@ -184,7 +184,7 @@ Stateless application : applications which donot store any data in them....all p
 
 
 
-Pod Phases/Pod Lifecycle: The phase of a pod  is a simple high level summary ehere the pod is in its lifecycle 
+Pod Phases/Pod Lifecycle: The phase of a pod  is a simple high level summary where the pod is in its lifecycle 
 1) Pending --> The pod has been accepted by the k8 cluster  but one or more containers present inside the pod have not yet been started 
 2)Running --> The pod has been scheduled to a node and all the containers have been created and up and running
 3)Succeeded --> All the containers in the pod  have terminated in successs and will not be restarted 
@@ -302,6 +302,7 @@ If both strtup and liveness probe are set, after container creation kubelet will
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 SERVICES: In k8 pods can communicate with each other by default without any configuration by using internal ip address assigned by kubeproxy.
 But these ip address are volatile in nature.
@@ -350,12 +351,27 @@ spec:
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 Load Balancer: Load balancer service will create an internal k8 service that is connected to a load balancer provided by any cloud provider. 
- with load balancer service node port and and cip services are created automatically.
+with load balancer service node port and and cip services are created automatically.
 Load balancers are used as the ip of k8 master n worker node are not long lived
 -------------------------------------------------------------------------------------------------------------------------------------
 Headless service: Headless service is the same as the default cluster ip but lacks proxying(do not have constant ip) allowing us to connect to a pod directly.
 Headless service will return all the ip of the pods which are associated with it.
+It is used for discovering individual pods(especially IPs) which allows another service to interact directly with the Pods instead of a proxy.
+That does not allocate an IP address or forward traffic.So you can do this by explicitly setting ClusterIP to “None” in the mainfest file, which means no cluster IP is allocated.
 use ngnix-dp-0.hl to connect to that pod  -- dns name
+When there is no need of load balancing or single-service IP addresses.We create a headless service which is used for creating a service grouping. That does not allocate an IP address 
+or forward traffic.So you can do this by explicitly setting ClusterIP to “None” in the mainfest file, which means no cluster IP is allocated.
+
+Kubernetes allows clients to discover pod IPs through DNS lookups. Usually, when you perform a DNS lookup for a service, the DNS 
+server returns a single IP which is the service’s cluster IP. But if you don’t need the cluster IP for your service, you can set 
+ClusterIP to None , then the DNS server will return the individual pod IPs instead of the service IP.Then client can connect to 
+any of them.
+
+Use Cases of Headless Service-
+-Create Stateful service
+-Deploying RabbitMQ to Kubernetes requires a stateful set for RabbitMQ cluster nodes.
+-Deployment of Relational databases
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -477,7 +493,7 @@ to get central logs from pod -- using node level logging agaent , grafana dashbo
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 POD AFFINITY / ANTI AFFINITY
-With pod affinity and antiaffinity we can define whether a pod or should not be schedules on to a particular node based on lebels of or=ther pods already running on that node
+With pod affinity and antiaffinity we can define whether a pod or should not be schedules on to a particular node based on lebels of other pods already running on that node
 
 
 Deploy DB with nodeSelector:
@@ -601,7 +617,7 @@ kubectl taint node <node-name> <key>=<value>:<taint-action>- To untaint a node
 Taint Actions:
 1)No schedule --> unless a pod has matching tolerations it wont be schedule onto the node.
 2)prefernoschedule --> it is the soft version of no schedule.
-3)noexecute --> k8s will immediately evict all the pods without the matching tolerationsfrom the node. 
+3)noexecute --> k8s will immediately evict all the pods without the matching tolerations from the node. 
 
 Pod With Tolerations:
 
@@ -623,8 +639,10 @@ spec:
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 kubectl delete deploy --all
+kubectl get all
 ------------------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Kuberenetes Volumes:
 
@@ -780,3 +798,408 @@ in k8 1.22 and above mismatch in cgroup betwwen docker n k8
 Weavenetworks -- makesure pods have different ip and manages network -- assigns subnet
 
 kubeproxy manages pod network internally and externally
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Environment Variables:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    env:
+    - name: ENV
+      value: dev
+    - name: DB
+      value: postgress
+--------------------------------------------------------------------------------------------------------------------------------
+
+configmaps and secrets: they are k8 objects to store data in key value pairs, pods can then use the data as env variables or
+as config files in a volume.
+Config maps maps and secrets are the ways of separating the configuration data from he manifests which makes them more portable
+Config maps are used to store data in terms of plain text which is open and redeable to all userswho have access to the cluster
+Secrets aresecure objects to store sensitive data such as passwords keys etc which are encrypted in base64
+
+ConfigMaps:
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: username
+data:
+  user: abc
+
+kubectl create configmap <configmap-name> --from-literal <key>=<value>
+kubectl create configmap username --from-literal user=abc
+---------------------------------------------------------------------------------------------------------------
+Secrets:
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: password
+type: Opaque
+data:
+  password: test
+
+kubectl create secret generic <secret-name> --from-literal <key>=<value>
+kubectl create secret generic password --from-literal password=test
+
+echo "abc" | base64
+echo "value" | base64 --decode
+---------------------------------------------------------------------------------------------------------------
+Mounting ComfigMaps and Secrets as ENV Variables:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    env:
+    - name: ENV
+      value: dev
+    - name: DB
+      value: postgress
+    - name: USER
+      valueFrom:
+        configMapKeyRef:
+          name: username
+          key: user
+    - name: PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: password
+          key: password
+---------------------------------------------------------------------------------------------------------------
+Namespace:
+
+Kubernetes namespace allows us to partition our cluster into virtual subdivisions. 
+We can create a namespace for different teams, projects etc. 
+Objects in different namespaces are invisible to each other which means there won't be any conflicts.
+
+Kubernetes has four initial namespaces:
+• default: This namespace is used for creating objects when a namespace is not specified.
+• kube-system: This namespace is used by Kubernetes system to create and run its components.
+• kube-public: The objects inside this namespace are readable by all users including those 
+               who are not authenticated to the ApiServer.
+• Kube-node-lease: This namespace is a new addition to Kubernetes and it has resources 
+                   which provide tools to monitor objects associated with each node.
+---------------------------------------------------------------------------------------------------------------
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+
+kubectl create ns <namespace-name> --> To create a namespace
+kubectl delete ns <namespace-name> --> To delete a namespace
+---------------------------------------------------------------------------------------------------------------
+Creating objects inside a namespace:
+
+1. Through Manifest Files:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: dev
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+---------------------------------------------------------------------------------------------------------------
+2. Through kubectl command
+
+kubectl apply -f <.yaml-file> -n dev --> To create a K8S object within a namespace
+---------------------------------------------------------------------------------------------------------------
+Assignment:
+Mount ConfigMap and Secret as Volumes  --  https://www.youtube.com/watch?v=_Sqy6vi6fWo
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+
+Resource Quotas: Namespaces do not enforce limitations or quotas automatically.For this purpose
+we can use k8s quotas to specify limits for around 15 k8s objects
+
+Resource Quotas:
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: rq
+spec:
+  hard:
+    pods: 1
+    configmaps: 2 
+    requests.cpu: 0.5
+    limits.cpu: 1
+    requests.memory: 256Mi
+    limits.memory: 500Mi
+---------------------------------------------------------------------------------------------------------------
+Pod with Limits:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    resources:
+      requests:
+        cpu: 0.1
+        memory: 64Mi
+      limits:
+        cpu: 0.25
+        memory: 128Mi
+---------------------------------------------------------------------------------------------------------------
+
+Securing Kubernetes:
+
+Context:
+A context is a group of access parameters to enable secure connection to a specific cluster’s API server. 
+Each context contains a Kubernetes cluster, a user, and a namespace..
+---------------------------------------------------------------------------------------------------------------
+Types of Users in Kubernetes: 
+User Account: We can create users and groups who can connect to the Kubernetes API server. 
+kubernetes- admin is the default user
+
+Service-Account:
+Service accounts are used to give access to processes inside pods to interact with the
+Kubernetes API. They can also be used by applications outside the cluster.
+
+For example, Prometheus monitoring tool which is used to monitor the cluster can be given the access using 
+Service-Account.
+---------------------------------------------------------------------------------------------------------------
+Creating Service Account:
+
+Step1: Create a Service Account
+kubectl create sa test
+
+Step2: Get the secret token name of the service Account
+kubectl describe sa test
+
+Step3: Get the token value of the secret
+kubectl describe secret <token-name>
+
+Step4: Assign the token value to a Variable
+TOKEN="<token-value-from-step3>"
+
+Step5: Assign the credential to the SA
+kubectl config set-credentials test --token=$TOKEN
+
+Step6: Creating a Context for the Service Account
+kubectl config set-context con --cluster=kubernetes --user=test
+---------------------------------------------------------------------------------------------------------------
+Creating User account: create ssl certificate using openssl genrsa -out name
+
+
+Commands:
+
+kubectl config get-contexts --> To display available contexts in config
+kubectl config use-context con --> To switch to a context
+---------------------------------------------------------------------------------------------------------------
+RBAC:
+
+RBAC or Role-Based Access Control is an approach in Kubernetes used to add constraints for users, groups, 
+and applications to access Kubernetes resources. RBAC basically adds security to the Kubernetes cluster, 
+and we can apply it for a specific namespace or to the total cluster.
+It was introduced in version 1.8 and uses rbac.authorization.k8s.io API group. 3 important concepts in RBAC.
+
+• Subject: Subject is the entity that needs access. It could be user or group or a service account
+• Resources: Resource is the K8s object that a subject wants to access. It could be pods, deployments, services etc
+• Verbs: Verbs are the actions that a subject can do on resources. It could be the list, delete, create, watch etc
+---------------------------------------------------------------------------------------------------------------
+Role & Cluster Role:
+Role and ClusterRole contains set of rules to access & modify Kubernetes resources. 
+Difference between them is Role works in a particular namespace while ClusterRole is cluster wide. 
+Basically, we use Role If we want to define permissions inside a namespace and use ClusterRole for cluster wide.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cr
+rules:
+- apiGroups: ["*"]
+  resources: ["pods", "secrets"]
+  verbs: ["list", "get"]
+
+kubectl create clusterrole cr --resources=pods --resource=secrets --verb=get --verb=list
+---------------------------------------------------------------------------------------------------------------
+Cluster Role Binding and Role Bindings:
+
+Rolebinding binds the Role to a Subject to access the Resources within a namespace while 
+ClusterRoleBinding binds the ClusterRole to a Subject to access the resources cluster-wide.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: crb
+subjects:
+- kind: ServiceAccount
+  name: test
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cr
+  apiGroup: rbac.authorization.k8s.io
+
+kubectl create clusterrolebinding crb --serviceaccount=default:test --clusterrole=cr
+---------------------------------------------------------------------------------------------------------------
+kubectl auth can-i get pods --> To check access
+
+kubectl edit pods podname -n namespacename --- without configuration
+
+kubectl describe quota rq -n test
+kubectl describe clusterrole cr
+
+kubectl config view  --> to see the k8s server
+---------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+
+EKS Cluster [Windows]: 
+
+Step 1: Install AWS ClI
+https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html
+
+Step 2: Open cmd.exe as Administrator
+
+Step 3: Install Chocolatey
+https://docs.chocolatey.org/en-us/choco/setup
+
+Step 4: Install eksctl
+choco install -y eksctl
+
+Step 5: Install kubectl
+choco install kubernetes-cli
+
+Step 6: Create Cluster
+eksctl create cluster \
+ --name my-cluster \
+ --version 1.23 \
+ --with-oidc \
+ --nodegroup-name worker \
+ --region ap-south-1 \
+ --node-type t2.medium \
+ --managed \
+ --ssh-access \
+ --ssh-public-key oct-2022 
+ 
+Setting Kube Config File:
+aws eks --region ap-south-1 update-kubeconfig --name my-cluster
+
+Cleanup:
+eksctl delete cluster --name my-cluster --region ap-south-1
+----------------------------------------------------------------------------------------------------------
+Kubernetes Dashboard [UI]:
+
+Step1: Install Kubernetes Metric Server[eks]
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+Step2: Install Kubernetes Dashboard
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+
+Alternatively [https://github.com/kubernetes/dashboard]
+
+Step3: Run command line proxy
+kubectl proxy
+
+Step4: Access the Dashboard
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+Note: The UI can only be accessed from the machine where the command is executed
+
+Cleanup:
+kubectl delete ns kubernetes-dashboard
+----------------------------------------------------------------------------------------------------------
+Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster. 
+Traffic routing is controlled by rules defined on the Ingress resource.
+
+For the Ingress resource to work, the cluster should have an ingress controller running. 
+The famous ingress controllers are Nginx, ALB and GCE
+
+Deploy Ingress Controller [https://kubernetes.github.io/ingress-nginx/deploy/]:
+
+Step1: Install Helm
+https://helm.sh/docs/intro/install/
+
+Step2: Deploy Ingress Controller
+helm upgrade --install ingress-nginx ingress-nginx \
+  --repo https://kubernetes.github.io/ingress-nginx \
+  --namespace ingress --create-namespace
+
+Repo Link: https://github.com/artisantek/kubernetes-ingress
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: hello
+            port: 
+              number: 80
+
+
+
+
+
+Cleanup:
+kubectl delete ns ingress
+----------------------------------------------------------------------------------------------------------
+Deploy EBS CSI Driver [Dynamic Volumes]:
+
+Step1: Find the roles attached to the Worker Nodes:
+kubectl -n kube-system describe configmap aws-auth
+
+Step2: Attach IAM Policy "AmazonEBSCSIDriverPolicy" to the role
+
+Step3: Deploy CSI Driver
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
+
+Example:
+
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: dynamic
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2 
+  fsType: ext4
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc
+spec:
+  storageClassName: dynamic
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+----------------------------------------------------------------------------------------------------------

@@ -1,3 +1,5 @@
+https://www.youtube.com/watch?v=o4QG_kqYvHk
+
 https://www.simplilearn.com/tutorials/devops-tutorial/devops-interview-questions
 
 Name three important DevOps KPIs.
@@ -25,3 +27,6 @@ advantage of k8s -- microsevices containers
 JFrog Artifactory can be classified as a tool in the "Code Collaboration & Version Control" category, while Sonatype Nexus is grouped under "Java Build Tools".
 
 DevSecOps (short for development, security, and operations) is a development practice that integrates security initiatives at every stage of the software development lifecycle to deliver robust and secure applications.
+
+Disaster recovery drills are used to simulate fault scenarios, formulate recovery plans, and verify whether the plans are applicable and effective. Services are not affected during disaster recovery drills. When a fault 
+occurs, you can use the plans to quickly recover services, thus improving service continuity.
