@@ -299,7 +299,7 @@ username: admin
 password: password
 ---------------------------------------------------------------------------------------------------------------
 SonarQube:
-
+Instalation prerequisite: java, postgress(for expandable in all env)not available in free version, sudo privilage
 URL: https://github.com/artisantek/sonarqube-installation-ubuntu.git
 
 Initial Setup
@@ -308,6 +308,20 @@ username: admin
 password: admin
 
 sonarqube scanner for jenkins - plugin 
+
+-create project , project-key, token in sonarqube
+-manage jenkins-manage credentials -Add credentials in jenkins
+-manage jenkins - configure system - sonarqubeservers- env variables- add sonarqube - add sonar url:9000
+-manage jenkins - global toool config -- add sonarcubescanner
+--manage jenkins - configure system - global properties - add env - add the url, login for security from jenkins file
+in jenkinsfile :
+stage('sonarqube analysis') {
+	steps {
+		withSonarQubeEnv('sonarqube') {
+			sh 'mvn sonar:sonar'
+}
+}
+https://www.youtube.com/watch?v=FOSVmqA0wpw
 ---------------------------------------------------------------------------------------------------------------
 Jenkinsfile:
 
@@ -379,3 +393,12 @@ There can be 2 masters(active node, passive node) for a job as a backup if one m
 number of slave in a job can be 4-6 generally
 
 email pipeline -https://www.youtube.com/watch?v=44xWLgGoLUg
+
+In cases where an older release of the plugin is desired, a Jenkins administrator can download an older . hpi archive and manually 
+install that on the Jenkins controller.
+
+Download the plugin (*.hpi file) and put it in the following directory:
+<jenkinsHome>/plugins/
+Afterwards you will need to restart Jenkins.
+
+To change jenkkins home dir  ---> set env JENKINS_HOME

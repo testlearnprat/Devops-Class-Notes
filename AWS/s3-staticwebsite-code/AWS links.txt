@@ -1,0 +1,1 @@
+https://www.youtube.com/watch?v=umc752URuIQ --- To setup cloud watch logs for ec2 instance

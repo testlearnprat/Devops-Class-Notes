@@ -1,0 +1,204 @@
+k8 developed by google, maintained by cncf
+
+1)Bare metal cluster
+2)Managed k8S service (AKS,EKS)
+
+ekibit concept --> to choose new master if master goes down
+
+TCP	Inbound	6443		Kubernetes API server		All
+TCP	Inbound	2379-2380	etcd server client API		kube-apiserver, etcd
+TCP	Inbound	10250		Kubelet API			Self, Control plane
+TCP	Inbound	10259		kube-scheduler			Self
+TCP	Inbound	10257		kube-controller-manager		Self
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Installing k8 basre metal cluster:
+1. Swap memory should be disabled for k8 to run
+2. Downloading necessary packages , keys , repos
+3. Install docker (containner docker)
+4. C group issue fix between docker k8
+5. Install k8 master components 
+
+
+C group --> to limit how much container can use
+Name space --> to limit how much a container can see
+
+kubectl version
+kubeadm version 
+
+To set up master -
+kubeadm init --> to initialize the server as master -- setups all master components (api server, etcd, scheduler, controller)
+
+We will get below info 
+kubeadm join 172.31.36.52:6443 --token fm1a1h.wt7x53cmt31z4plp \
+        --discovery-token-ca-cert-hash sha256:8a590e40c84dfacd814c06c8bec4749c9ba9c43e046a9cd32b3b068da2350aba
+
+Then switch to ubuntu user and run configure commands to athunticate user to use certificates  --> mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+config file is important to authenticate the user 
+
+
+Run cli network commands to set up network -- view network assigns different ips for every pod
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
+kubectl apply -f "https://cloud.weave.works/k8s/v1.13/net.yaml"
+kubectl get nodes
+
+------------------------------------------------------------------------------------
+
+To initialize worker node:
+launch instance...install k8s
+switch to root user
+run kubeadm join
+
+example for multiple containers in a pod -- init containers in database
+
+At any given time, a Kubernetes node can be in one of the following states:
+1)Ready—able to run pods.
+2)NotReady—not operating due to a problem, and cannot run pods.
+3)SchedulingDisabled—the node is healthy but has been marked by the cluster as not schedulable.
+4)Unknown—if the node controller cannot communicate with the node, it waits a default of 40 seconds, and then sets the node status to unknown.
+
+REAsons for orchestration tools --
+1) to avoid single point of failure
+2) to keep the containers up 24*7 / replace dead with new
+3) auto scaling
+
+Need of pod :
+1) k8 supports multiple container run time
+2)u can set a policy to maintain a container
+3)multiple container -->tightlycoupled microservices like db
+
+kubectl run --> to create pod, deployment, replicaset
+
+kubectl explain pod --> to see version and kind and other 
+
+kubectl label pod <podname> key=value --> to label a pod
+kubectl label --overwrite pod <podname> key=value --> to rename label a pod
+kubectl label pod --all <podname> key=value
+kubectl get pods --show-label 
+kubectl delete pods --all --> to delete all pods
+
+kubectl explain pod --recursive |less 
+
+kubectl drain --> to remove everything in worker node
+kubectl delete nod -- to delete nod 
+
+kubectl get pods --show-labels
+
+kubectl edit pod  <podname>  --> to edit created pod
+
+k8 supports 3 types of object management:
+1)imperative commands
+2)imperative object configuration --- kubectl create  
+3)declarative object configuration  --- kubectl apply
+https://www.youtube.com/watch?v=3uy7BSCj0I0&list=PL6XT0grm_TfhFKUv_KI_DTVr0TCincl1r&index=14
+
+
+kubectl delete -f <filename>  --> delete all resource related to that file
+
+kubectl diff -f <filename> --> difference between original and new file
+
+set env in yaml file under spec: containers:
+example:
+env:
+- name: prateek
+  value: xyz
+
+kubectl exec <podname> -c <container name> env --> to list env
+
+kubectl exec <podname> -c <containername> -it bash --> to attach to the container
+kubectl exec <podname> -c <containername> -it ls / --> to list files in container
+
+netcat -l -p 8000  --> to open port 8000 in container -->first exec to container using kubectl exec command
+
+All the containers in a pod share same network 
+
+Initcontainer --> it will be initiated first in a pod...after its completion other container will start    
+
+kubectl expose pod <podname> --port=<port> --target-port=<port> --name <clusteripname> -->
+
+kubectl explain service
+
+kubectl ex plain rs --recurssive |less
+
+CNI - container networking interface --> to manage pod to pod communication....using weavenet
+
+qorum concept -- odd number of masters - high availability fashion
+
+config file --> $HOME/.kube/config  --> to connect to a cluster in different environments
+config file will have clusters,contexts,users
+
+A container runtime, also known as container engine, is a software component that can run containers on a host operating system.
+https://www.aquasec.com/cloud-native-academy/container-security/container-runtime/
+
+why one container is prefered in a pod: all the containers are tightly packed...given same ip by kube proxy..given one identity...if one goes down it will effect other containers.
+
+The reason behind using pod rather than directly container is that kubernetes requires more information to orchestrate the containers like restart policy , liveness probe , readiness probe .
+
+Also, Kubernetes supports the multi-container pod which is mainly requires for the sidecar containers mainly log or data collector 
+or proxies for the main container. Another advantage of multi-container pod is they can have very tightly coupled application container 
+together sharing the same data, same network namespace and same IPC namespace which would not be possible if they choose for directly 
+using container without any wrapper around it.
+
+Various Types of Deployment Strategies   -- https://www.opsmx.com/blog/advanced-deployment-strategies-devops-methodology/
+Blue/Green Deployment. In this type of deployment strategy, the new version of the software runs alongside the old version. ...
+Canary Deployment. ...
+Recreate Deployment. ...
+Ramped/Rollout Deployment. ...
+Shadow Deployment. ...
+A/B Testing Deployment.
+
+
+
+cluster autoscaler
+horizontal autoscaling
+vertical autoscaling
+
+CrashLoopBackOff:
+Misconfigurations: Like a typo in a configuration file.
+A resource is not available: Like a PersistentVolume that is not mounted.
+Wrong command line arguments: Either missing, or the incorrect ones.
+Bugs & Exceptions: That can be anything, very specific to your application.
+You tried to bind an existing port.
+The memory limits are too low, so the container is Out Of Memory killed.
+Errors in the liveness probes are not reporting the Pod as ready.
+Read-only filesystems, or lack of permissions in general.
+
+
+In Kubernetes, a HorizontalPodAutoscaler automatically updates a workload resource (such as a Deployment or StatefulSet), with the aim of automatically scaling the workload to match demand.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+Cluster Autoscaler (CA): adjusts the number of nodes in the cluster when pods fail to schedule or when nodes are underutilized.
+Horizontal Pod Autoscaler (HPA): adjusts the number of replicas of an application.
+Vertical Pod Autoscaler (VPA): adjusts the resource requests and limits of a container.
+
+https://www.kubecost.com/kubernetes-autoscaling/kubernetes-cluster-autoscaler/
+
+The Cluster Autoscaler automatically adds or removes nodes in a cluster based on resource requests from pods. The Cluster Autoscaler doesn’t 
+directly measure CPU and memory usage values to make a scaling decision. Instead, it checks every 10 seconds to detect any pods in a pending 
+state, suggesting that the scheduler could not assign them to a node due to insufficient cluster capacity.
+
+The AWS Load Balancer Controller manages AWS Elastic Load Balancers for a Kubernetes cluster. 
+The controller provisions the following resources: An AWS Application Load Balancer (ALB) when you create a Kubernetes Ingress . 
+An AWS Network Load Balancer (NLB) when you create a Kubernetes service of type LoadBalancer .
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Disaster Recovery (DR) is the amount of impact an organization can take during a disaster (disaster = any service-interrupting event, 
+like a power surge, for example). There are 2 key metrics that define the impact: RTO (Recovery Time Objective) and RPO (Recovery Point Objective).
+AWS Elastic Disaster Recovery (AWS DRS) minimizes downtime and data loss with fast, reliable recovery of on-premises and cloud-based applications.
+
+
+Amazon EKS supports IAM Roles for Service Accounts (IRSA) that allows cluster operators to map AWS IAM Roles to Kubernetes Service Accounts. This 
+provides fine-grained permission management for apps that run on EKS and use other AWS services.
+
+Init containers can contain utilities or custom code for the setup that are not present in an app image.
+They can be given access to Secrets that app containers cannot access.
+Clone a Git repository into a Volume
+It can be used to wait for a service to start that is to be used by the main app
+An init container is a good candidate for delaying the application initialization until one or more dependencies are available.
+
+configmaps and secrets set up database endpoints
+

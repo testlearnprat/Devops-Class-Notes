@@ -1,3 +1,4 @@
+https://kinsta.com/blog/devops-tools/
 ---------------------------------------------------------------------------------------------------
 LINUX
 ----------------------------------------------------------------------------------------------------
@@ -682,6 +683,8 @@ systemctl status service_name --> check if service is running
 systemctl start servicename --> to start service
 systemctl stop servicename --> to stop service
 
+curl -s --head www.google.com | head -1 | grep 200
+
 A service is a program that runs in the background outside the interactive control of system users as they lack an interface
 
 telnet or ping  --> to check if IP/server is accessable or nott
@@ -724,7 +727,16 @@ Apache Tomcat is a web container. It allows the users to run Servlet and JAVA Se
 
 Both su and sudo elevate privileges assigned to the current user. The main difference between the two is that su requires the password of the target account, while sudo requires the password of the current user
 
+cd doesnt work with sudo
 
 
+umask 444  --> to change umask -- valid for session
 
- 
+root user default umask -- 022
+other users default 002
+umask cannot give executable perm
+
+chgrp <usename> <groupname> --> to change group
+
+find command is recurssive in nature
+

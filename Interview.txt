@@ -1,0 +1,32 @@
+https://www.youtube.com/watch?v=o4QG_kqYvHk
+
+https://www.simplilearn.com/tutorials/devops-tutorial/devops-interview-questions
+
+Name three important DevOps KPIs.
+The three important KPIs are as follows:
+
+Meantime to failure recovery - This is the average time taken to recover from a failure.
+Deployment frequency - The frequency in which the deployment occurs. 
+Percentage of failed deployments - The number of times the deployment fails.
+
+What Is a Grafana Dashboard? A Grafana dashboard supports multiple panels in a single grid. You can visualize results from multiple data 
+sources simultaneously. It is a powerful open-source analytical and visualization tool that consists of multiple individual panels 
+arranged in a grid.
+
+https://stackify.com/15-metrics-for-devops-success/
+
+docker swarm vs k8s --
+docker is not robust  ... k8 is robust
+auto scalling not possible					auto scaling possible
+rolling update manually						easy rollig update
+no built in tool for logging and monitering		promethius , graffana, loki- for logging and monitering
+
+advantage of k8s -- microsevices containers
+
+
+JFrog Artifactory can be classified as a tool in the "Code Collaboration & Version Control" category, while Sonatype Nexus is grouped under "Java Build Tools".
+
+DevSecOps (short for development, security, and operations) is a development practice that integrates security initiatives at every stage of the software development lifecycle to deliver robust and secure applications.
+
+Disaster recovery drills are used to simulate fault scenarios, formulate recovery plans, and verify whether the plans are applicable and effective. Services are not affected during disaster recovery drills. When a fault 
+occurs, you can use the plans to quickly recover services, thus improving service continuity.

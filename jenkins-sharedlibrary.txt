@@ -1,0 +1,74 @@
+Pre Requisites:
+
+### Server Requirments ###
+
+Server 1: Configure to Connect to EKS Cluster 
+
+1. Install Java to be used as Jenkins agent
+2. Install kubectl --> https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+3. Install and Configure AWS CLI --> https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+4. Setup Kube Config --> aws eks --region ap-south-1 update-kubeconfig --name my-cluster
+
+Additional Step: [For Pulling Private DockerHub Images into kubernetes Cluster]
+
+a. Using Username and Password
+kubectl create secret docker-registry dockerhub \ 
+--docker-server=https://index.docker.io/v1/ \ 
+--docker-username=artisantek \
+--docker-password=<password> \
+--docker-email=artisantekind@gmail.com
+
+b. Using Docker Login Command
+kubectl create secret generic dockerhub \ 
+--from-file=.dockerconfigjson=.docker/config.json \ 
+--type=kubernetes.io/dockerconfigjson
+----------------------------------------------------------------------------------------------------------
+Server 2: Configure to run docker run commands
+
+1. Install Java to be used as Jenkins agent
+2. Install Docker
+3. Configure Docker to communicate with a Image Repository
+----------------------------------------------------------------------------------------------------------
+Server 3: Setup Jenkins
+
+1. Add Server1 and Server2 as agents to Jenkins
+2. Setup Credentials for Github/Dockerhub
+3. Install required plugins [kubernetes cli]
+----------------------------------------------------------------------------------------------------------
+### Setup Shared Library ###
+
+Shared Library:
+
+A shared library is a collection of independent Groovy scripts which you pull into your Jenkinsfile at runtime.
+Let’s say we are supporting five micro services in the project typically, all five microservices need their own Jenkinsfile, 
+but the content of the Jenkinsfiles is going to be mostly the same except for some inputs. 
+Jenkins Shared Library avoids this repetition of pipeline code by creating a shared library.
+
+Steps to create Jenkins shared library:
+
+Step 1: Create vars folder
+Create a Git repository and create a directory called vars, which will host the shared library’s source code (file extension .groovy)
+
+Step 2: Create Groovy file
+Create a file <name.groovy> inside the vars folder (camel casing is mandatory for file names). 
+The filename will be used later by Jenkinsfile to access this Jenkins pipeline library.
+
+Step 3: Create call() function inside Groovy file
+When a shared library is referred from the Jenkins job, Jenkins, by default, 
+will invoke the call() function within our Groovy file. Consider the call() function like the main() method in Java. 
+We can also specify parameters for the call() function if we want to.
+
+In Jenkins --> Configure System --> Global Pipeline Libraries
+----------------------------------------------------------------------------------------------------------
+### Create a jenkins Pipeline Job to Use Shared Library ###
+
+@Library('sharedlibrary')_
+eksShellPlugin('dockerhub', 'artisantek/useraccount', \
+'version', 'https://github.com/artisantek/nodejs-useraccount.git', \
+'main', 'github', 'webapp-deployment', 'nodejs')
+----------------------------------------------------------------------------------------------------------
+
+
+
+
+

@@ -1,0 +1,299 @@
+"The cloud" refers to servers that are accessed over the Internet, and the software and databases that run on those servers
+
+
+CloudWatch enables you to monitor your complete stack (applications, infrastructure, and services) and use alarms, logs, and events 
+data to take automated actions and reduce mean time to resolution (MTTR). This frees up important resources and allows you to focus 
+on building applications and business value.
+
+Latency -- Network latency is the amount of time it takes for a data packet to go from one place to another
+
+Basic Cloudwatch - 5 mins
+
+STS -- > AWS provides AWS Security Token Service (AWS STS) as a web service that enables you to request temporary, limited-privilege 
+credentials for AWS Identity and Access Management (IAM) users or for users you authenticate.
+
+Amazon Simple Queue Service (SQS) lets you send, store, and receive messages between software components at any volume, without losing 
+messages or requiring other services to be available.
+
+Amazon Simple Notification Service (Amazon SNS) is a web service that makes it easy to set up, operate, and send notifications from the 
+cloud.
+
+P agent -- used to connect to private ip without saving the pem file in public server.
+
+IOPS, IOPS is a count of the read/write operations per second, but throughput is the actual measurement of read/write bits per second that 
+are transferred over a network
+
+ssd -- solid state drive
+
+A burstable instance is a virtual machine (VM) instance that provides a baseline level of CPU performance with the ability to burst to a 
+higher level to support occasional spikes in usage.
+
+fargate --https://containersonaws.com/introduction/ec2-or-aws-fargate/       https://aws.amazon.com/blogs/aws/aws-fargate/
+
+https://toolbox.iskysoft.com/data-recovery-tips/ext4-vs-xfs-vs-ext3-vs-btrfs-vs-zfs.html
+
+API architecture refers to the process of developing a software interface that exposes backend data and application functionality for 
+use in new applications. With an API-first architecture, you can create ecosystems of applications that are modular and reusable — 
+which is ideal for microservices
+
+Load balancer is a AWS service which uniformly distributes network traffic and workloads among multiple servers or cluster of servers.
+Load balancer increases the availability and fault tolerance of an application
+
+Block storage is the oldest and simplest form of data storage. Block storage stores data in fixed-sized chunks called — you guessed it — 
+‘blocks’.  there is no metadata associated with blocks
+Compared to block storage, object storage is much newer. With object storage, data is bundled with customizable metadata tags and a 
+unique identifier to form objects. Objects are stored in a flat address space and there is no limit to the number of objects stored, 
+making it much easier to scale out.
+
+What Is the OSI Model. The Open Systems Interconnection (OSI) model describes seven layers that computer systems use to communicate 
+over a network. It was the first standard model for network communications, adopted by all major computer and telecommunication 
+companies in the early 1980s.
+
+Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at 
+any scale. API developers can create APIs that access AWS or other web services, as well as data stored in the AWS Cloud 
+API is the acronym for Application Programming Interface, which is a software intermediary that allows two applications to talk to each 
+other.
+
+There are multiple Routing Policies facilitated. -- https://crishantha.medium.com/aws-route-53-and-routing-policies-b7dc67e74516
+Simple Routing Policy
+Fail-over Routing Policy
+Weighted Routing Policy
+Latency Routing Policy
+Geo-location Routing Policy
+Multivalue Routing Policy
+
+AWS is a secure cloud sevices providing platform which provides different services based on compute power, storage, database, 
+content delivery, monitering etc
+Domains :
+Compute - EC2, EBS, Lambda
+Storage - S3 , EfS , glacier
+network - vpc, route 53, cloud front
+monitering - cloud watch , cloud formation, lbs
+security - iam
+database - rds, redshift
+application - sns, email, sqs
+devops - codepipeline, code commit, code build 
+
+Lambda is a serverless compute service where devlopers doesnt have to worry about which type of aws resources they need to set up, 
+they can just test their code on the go.
+
+The following are the limitations of Amazon RDS:
+Patching causes downtime.
+It doesn’t support scale-out for the write workloads.
+The user has to perform some administrative tasks.
+A downtime is needed to perform scaling operations.
+There is no guarantee for zero data loss.
+It doesn’t support automated compression management
+
+AWS CloudFormation is a service that helps you model and set up your AWS resources so that you can spend less time managing those 
+resources and more time focusing on your applications that run in AWS. You create a template that describes all the AWS resources 
+that you want (like Amazon EC2 instances or Amazon RDS DB instances), and CloudFormation takes care of provisioning and configuring 
+those resources for you
+
+A relational database is structured, meaning the data is organized in tables. Many times, the data within these tables have 
+relationships with one another, or dependencies. A non relational database is document-oriented, meaning, all information gets 
+stored in more of a laundry list order
+example for non relational database - mongodb, cassandra, hbase , neo4, dynamodb
+
+All the NLB cares about is forwarding the incoming TCP or UDP connection to a target. The NLB does not inspect an incoming HTTP request, 
+for example. Therefore, the NLB has much less work to do than an ALB. As a result, the NLB needs significantly less time to forward 
+an incoming request
+
+Network Load Balancer (NLB)
+This is the distribution of traffic based on network variables, such as IP address and destination ports. It is layer 4 (TCP) and 
+below and is not designed to take into consideration anything at the application layer such as content type, cookie data, custom 
+headers, user location, or the application behavior. It is context-less, caring only about the network-layer information contained 
+within the packets it is directing this way and that.
+https://medium.com/awesome-cloud/aws-difference-between-application-load-balancer-and-network-load-balancer-cb8b6cd296a4
+
+OSI model -- 7 layers -- What Is the OSI Model. The Open Systems Interconnection (OSI) model describes seven layers that computer 
+systems use to communicate over a network.
+
+API is the acronym for Application Programming Interface, which is a software intermediary that allows two applications to talk to 
+each other.
+
+Launch Configuration in Auto scaling -- Ami, Ebs, roles, private key , sg
+
+AWS WAF is a web application firewall that helps protect apps and APIs against bots and exploits that consume resources, skew metrics, 
+or cause downtime
+
+Amazon API Gateway is a fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs 
+at any scale. APIs act as the "front door" for applications to access data, business logic, or functionality from your backend services.
+
+In Lambda, concurrency is the number of requests your function can handle at the same time. There are two types of concurrency controls 
+available:
+Reserved concurrency – Reserved concurrency guarantees the maximum number of concurrent instances for the function. When a function has 
+reserved concurrency, no other function can use that concurrency. There is no charge for configuring reserved concurrency for a function.
+
+Provisioned concurrency – Provisioned concurrency initializes a requested number of execution environments so that they are prepared 
+to respond immediately to your function's invocations. Note that configuring provisioned concurrency incurs charges to your AWS account.
+
+Lamda tutorials : https://www.youtube.com/watch?v=5QwrseYLwNM&list=PL5KTLzN85O4KO0qEeUVvwTTcHFsdE6Dhx&index=8
+
+A Lambda layer is an archive containing additional code, such as libraries, dependencies, or even custom runtimes. When you 
+include a layer in a function, the contents are extracted to the /opt directory in the execution environment
+
+Three components comprise AWS Lambda:
+A function. This is the actual code that performs the task.
+A configuration. This specifies how your function is executed.
+An event source (optional). This is the event that triggers the function. You can trigger with several AWS services or a third-party 
+service.
+
+Amazon Comprehend is a natural-language processing (NLP) service that uses machine learning to uncover valuable insights and 
+connections in text.
+
+The first time you call a function takes a bit more time to execute and respond. Any subsequent iteration with the same function 
+will be quite faster than the first one. So we call the very first iteration with a function a “cold start”. Any further request will 
+be handled by an already wrapped function inside a running container, so the function will have a “warm start”.
+
+Both the Edge Locations (EL) and Availability Zones (AZ) are AWS Data Centers, but EL are primarily used for caching of the data to 
+provide better user experience with low latency, the AZ are used for hosting servers, websites, applications, softwares, Big Data 
+processing, analytics and a wide variety of use cases
+
+Regional Edge Caches are located between origin web servers and global edge locations and have a larger cache
+
+
+Amazon Cognito lets you easily add user sign-up and authentication to your mobile and web apps. Amazon Cognito also enables you to 
+authenticate users through an external identity provider and provides temporary security credentials to access your app's backend 
+resources in AWS or any service behind Amazon API Gateway
+
+By using an Elastic IP address, you can mask the failure of an instance or software by rapidly remapping the address to another 
+instance in your account. 
+
+Aws xray is a distributed tracing system /performance monitering system  --- helps developers analyze n debug applications 
+using microservice architecture
+
+Microservices is an architectural and organisational approach to software development where software is composed of small 
+independent services which communicate over well defined api's
+
+Amazon API Gateway is an AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and 
+WebSocket APIs at any scale. API developers can create APIs that access AWS or other web services, as well as data stored in the AWS Cloud 
+The API endpoint type can be edge-optimized, regional, or private, depending on where the majority of your API traffic originates from.
+
+You can use Route 53 to perform three main functions in any combination: domain registration, DNS routing, and health checking. Your
+ website needs a name, such as example.com. Route 53 lets you register a name for your website or web application, known as a domain name.
+DNS service provided by AWS named AWS Route 53 is one of the most well-known, reliable, and cost-effective services for managing and maintaining domains
+What is a hosted zone in Route 53?  -- https://intellipaat.com/blog/what-is-aws-route53/#no9
+A hosted zone is an Amazon Route 53 concept. A hosted zone is analogous to a traditional DNS zone file; it represents a collection of 
+records that can be managed together, belonging to a single parent domain name. All resource record sets within a hosted zone must 
+have the hosted zone's domain name as a suffix.
+
+
+AWS CloudFormation is a service that helps you model and set up your AWS resources so that you can spend less time managing those resources
+
+
+A Certification for Health Delivery System Case Management and Transitions of Care Professionals. The ACM Certification was created 
+by ACMA in 2005, and is designed specifically for health delivery system and transitions of care (TOC) case management professionals.
+
+
+An MX record specifies the names of your mail servers and, if you have two or more mail servers, the priority order. Each value for 
+an MX record contains two values, priority and domain name. An integer that represents the priority for an email server.
+
+
+Routing Policy  --> Multivalue answer routing distributes DNS responses across multiple IP addresses. If a web server becomes unavailable 
+after a resolver caches a response, a client can try up to eight other IP addresses from the response to avoid downtime
+
+
+An NS record (or nameserver record) is a DNS record that contains the name of the authoritative name server within a domain or DNS zone. 
+When a client queries for an IP address, it can find the IP address of their intended destination from an NS record via a DNS lookup.
+The NS records and A records are both used to provide DNS services. The difference between them is that the former define the servers 
+that provide DNS services for a domain name while the A records translate hostnames (such as www, FTP, mail) into IP addresses.
+
+The DNS 'start of authority' (SOA) record stores important information about a domain or zone such as the email address of the 
+administrator, when the domain was last updated, and how long the server should wait between refreshes. All DNS zones need an 
+SOA record in order to conform to IETF standards.
+
+An MX record specifies the names of your mail servers and, if you have two or more mail servers, the priority order. Each value for 
+an MX record contains two values, priority and domain name. An integer that represents the priority for an email server.
+A mail exchanger record (MX record) is a configuration that specifies which mail servers can accept email that's sent to your domain. 
+To have Amazon SES manage your incoming email, you need to add an MX record to your domain's DNS configuration.
+
+In Route53, a hosted zone is a container for managing the DNS records on a domain that uses Route53 as its DNS provider. 
+Route53 provides some features that other DNS providers may not have, such as the ability to use Alias records for AWS resources, 
+and configuring a private hosted zone for use with Amazon VPC.
+
+You are initially limited to launching 20 Amazon EC2 instances at any one time and a maximum VPC size of /16 (65,536 IPs).
+
+https://aws.amazon.com/vpc/faqs/#:~:text=How%20many%20subnets%20can%20I,case%20at%20the%20support%20center.
+
+VPC flow logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces in your VPC
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html
+
+Route 53 - ELB - ACM  - https://www.youtube.com/watch?v=JQP96EjRM98
+
+Create(register) a domain name in Route 53 --> create a hosted zone with that domain name --> Copy the NS records(4) to the domain registered -->  
+
+
+An SSL certificate is a bit of code on your web server that provides security for online communications. When a web browser contacts your 
+secured website, the SSL certificate enables an encrypted connection. It's kind of like sealing a letter in an envelope before sending it 
+through the mail. Why you need an SSL certificate. Websites need SSL certificates to keep user data secure, verify ownership of the website, 
+prevent attackers from creating a fake version of the site, and convey trust to users.
+HTTPS and SSL are similar things but not the same. HTTPS basically a standard Internet protocol that makes the online data to be encrypted and
+is a more advanced and secure version of the HTTP protocol. SSL is a part of the HTTPS protocol that performs the encryption of the data
+
+An SSL/TLS certificate is a digital object that allows systems to verify the identity & subsequently establish an encrypted network 
+connection to another system using the Secure Sockets Layer/Transport Layer Security (SSL/TLS) protocol.
+Transport Layer Security (TLS) is the successor protocol to SSL. TLS is an improved version of SSL. It works in much the same way as the 
+SSL, using encryption to protect the transfer of data and information. The two terms are often used interchangeably in the industry 
+although SSL is still widely used.
+
+A precursor to SSL/TLS handshake is the TCP handshake. An SSL/TLS handshake takes place only after a TCP connection has been opened. 
+SSL handshakes are nothing but a series of datagrams being exchanged and certain protocols agreed on to ensure the rest of the 
+communication is secure
+
+The handshake protocol uses the public key infrastructure (PKI) and establishes a shared symmetric key between the parties to ensure 
+confidentiality and integrity of the communicated data.
+
+A TLS handshake is the process that kicks off a communication session that uses TLS. During a TLS handshake, the two communicating sides 
+exchange messages to acknowledge each other, verify each other, establish the cryptographic algorithms they will use, and agree on session keys
+
+What Is an SSL/TLS Handshake? An SSL/TLS handshake is a negotiation between two parties on a network – such as a browser and web server – 
+to establish the details of their connection.
+
+
+An endpoint provides connection, data store type, and location information about your data store. AWS Database Migration Service uses 
+this information to connect to a data store and migrate data from a source endpoint to a target endpoint.
+
+An endpoint is a component of an API, while an API is a set of rules that allow two applications to share resources. Endpoints are the locations 
+of the resources, and the API uses endpoint URLs to retrieve the requested resources
+
+Endpoints are virtual devices that are horizontally scaled, redundant, and highly available VPC components. VPC endpoints allow 
+communication between instances in your VPC and services, without imposing availability risks or bandwidth constraints on your network 
+traffic
+
+Stickiness is a term that is used to describe the functionality of a load balancer to repeatedly route traffic from a client to a 
+single destination, instead of balancing the traffic across multiple destinations.
+By default, an Application Load Balancer routes each request independently to a registered target based on the chosen load-balancing 
+algorithm. However, you can use the sticky session feature (also known as session affinity) to enable the load balancer to bind a user's 
+session to a specific target. This ensures that all requests from the user during the session are sent to the same target. 
+This feature is useful for servers that maintain state information in order to provide a continuous experience to clients. 
+To use sticky sessions, the client must support cookies.
+https://docs.aws.amazon.com/elasticloadbalancing/latest/application/sticky-sessions.html
+
+To mount and create file system for new ebs :
+df -h 
+lsblk
+file -s /dev/xvdf
+mkfs -t xfs /dev/xvdf
+file -s /dev/xvdf
+create bakup directory
+mount /dev/xvdf /bakup
+umount /bakup
+df -h
+lsblk
+
+
+Mount efs to ec2:
+sudo apt-get update
+sudo apt-get install nfs-common
+mkdir efs
+copy nfs command from efs attach page
+https://www.youtube.com/watch?v=PHVthx8lG4g
+
+aws s3 sync <sourcepath> <s3path>  --> to copy from local to s3
+aws s3 sync <sourcebucket> <destination bucket>  --> to copy from one s3 bucket to anaother
+
+application orchestration  -- SNS, SQS, AWS STEP FUNCTION
+Analytics ,BIGDATA, MACHINE LEARNING   --->> AWS Athena, AWS EMR
+

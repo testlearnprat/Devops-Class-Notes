@@ -76,6 +76,9 @@ Git class-3 (26.10.2022)
 17. git diff --staged Head <filename> --> diff between last commit n staged ares
 18. git diff <branch1> <branch2> --> diff between two branch
 19. git diff master url <branch name> --> diff between local n remote repo
+20. git clean --> remove untracked files
+21. git clean -n --> list untracked files
+22. git clean -n -d --> list untracked dir/files
 
 In .git all the information will be stored.
 A git submodule is a record within a host git repository that points to a specific commit in another external repository
@@ -216,3 +219,42 @@ https://www.tutorialspoint.com/maven/maven_pom.htm
 
 learn git reset --soft , --hard vs reset ...  git checkout commit id ...head? git diff , git hooks - 
 https://www.youtube.com/watch?v=5icDpq56VDQ&list=PLUDwpEzHYYLuMNNTu0EdWBeBtXdRhj4Lv&index=7
+
+Git can specify which files or parts of your project should be ignored by Git using a .gitignore file.
+Git will not track files and folders specified in .gitignore
+
+Ant						Maven
+It is a tool box.			It is a framework.
+It is mainly a build tool.		It is mainly a project management tool.
+The ant scripts are not reusable.	The maven plugins are reusable.
+It is less preferred than Maven.	It is more preferred than Ant.
+
+Gradle is based on developing domain-specific language projects. Maven is based on developing pure Java language-based software
+
+A multi-module project is built from an aggregator POM that manages a group of submodules. In most cases, the aggregator 
+is located in the project's root directory and must have packaging of type pom. The submodules are regular Maven projects, 
+and they can be built separately or through the aggregator POM.
+
+A git submodule is a record within a host git repository that points to a specific commit in another external repository. 
+Submodules are very static and only track specific commits. Submodules do not track git refs or branches and are not automatically 
+updated when the host repository is updated.
+
+example for maven dependency - Java Servlet is the foundation web specification in the Java Enterprise Platform. 
+Developers can build web applications using the Servlet API to interact with the request/response workflow.
+
+Isuues while running maven --> java files missing, mismatch in versions, code mistakes,...in a big project like e-commerce 
+lot of microservices will be there and there will be lot of dependency. 
+
+maven-surefire-plugin is designed for running unit tests and if any of the tests fail then it will fail the build immediately. 
+maven-failsafe-plugin is designed for running integration tests, and decouples failing the build if there are test failures 
+from actually running the tests.
+
+To skip a test - "-Dmaven.test.skip=true"
+
+git tag <tagname> -- to create tag
+git tag --> to list tags
+git push origin <tagname> --> to push to remote
+git push --tags --> to push all tags to remote
+git tag -d <tagname> -- to delete
+git checkout -b <branchname> <tagname> --> to create new branch out of tag
+git tag <tagname> <commitid> --> to create tag of that commit

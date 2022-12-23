@@ -1,0 +1,12 @@
+Explain your Branching strategy of your project or release activity or release architecture
+
+Branches can be created for multiple reasons. Here we create branches for release. Development will 
+be going on the dev branch, so once the code is ready on the dev branch for the first release, we 
+create a release number one branch  and we make a release from the release one branch and 
+this branch acts as a maintainance branch for the first release. that means whateve the issuses 
+related to the first release will be fixed on release one branch and parelley developement will be 
+going on dev branch for the second release once the code is ready for the second release on the dev 
+branch before we create release 2 branch we merge release 1 branch to dev branch. 
+Then we create branch for second release from the dev branch
+
+whatever the issuses that we haave seen in previous releases that should not be visible in the next release.
