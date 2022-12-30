@@ -740,3 +740,4 @@ chgrp <usename> <groupname> --> to change group
 
 find command is recurssive in nature
 
+PSCP (PuTTY Secure Copy Protocol) is a command-line tool for transferring files and folders from a Windows computer to a Linux computer.

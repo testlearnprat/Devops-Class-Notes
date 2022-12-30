@@ -258,3 +258,5 @@ git push --tags --> to push all tags to remote
 git tag -d <tagname> -- to delete
 git checkout -b <branchname> <tagname> --> to create new branch out of tag
 git tag <tagname> <commitid> --> to create tag of that commit
+
+git log --oneline --decorate --all --graph

@@ -125,7 +125,7 @@ kubectl scale rs <name>  --replicas=10  --> to change number of replicas
 
 for set based:
 matchExpressions:
-(key: app operator: in, values: )
+(key: app, operator: in, values: nginx )
 
 replica set uses recreate update strategy
 deployment uses rolling update strategy
@@ -1202,4 +1202,24 @@ spec:
   resources:
     requests:
       storage: 1Gi
-----------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------
+
+Some of the Use cases for Init Containers can:
+
+Cause a pod to wait for another Kubernetes resource to be created before finishing startup.
+Perform sensitive startup steps securely outside of app containers.
+Populate data into a shared volume at startup.
+Communicate with another service at startup.
+Init containers can contain utilities or custom code for the setup that are not present in an app image.
+They can be given access to Secrets that app containers cannot access.
+Clone a Git repository into a Volume
+It can be used to wait for a service to start that is to be used by the main app
+An init container is a good candidate for delaying the application initialization until one or more dependencies are available.
+
+sidecar containers   --  https://blog.knoldus.com/sidecar-container-vs-init-container-in-kubernetes/#use-case-of-side-car-container
+It used by log shippers, log watchers, monitoring agents
+
+The main container is an Nginx container that stores its logs on a volume mounted on /var/log/nginx. Mounting a volume at that location prevents Nginx from outputting its log data to the standard output and forces it to write them to access.log and error.log files.
+
+logs - https://sematext.com/guides/kubernetes-logging/#:~:text=Within%20a%20Kubernetes%20system%2C%20we,(or%20system%20component)%20logs.

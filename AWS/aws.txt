@@ -297,3 +297,24 @@ aws s3 sync <sourcebucket> <destination bucket>  --> to copy from one s3 bucket 
 application orchestration  -- SNS, SQS, AWS STEP FUNCTION
 Analytics ,BIGDATA, MACHINE LEARNING   --->> AWS Athena, AWS EMR
 
+There are a variety of load balancing algorithms: Weighted Round Robin, Random, Source IP, URL, Least Connections, Least Traffic, Least Latency. Given the shortcoming in Round Robin, you can consider trying other choices. One choice you may consider is: Least Connections algorithm. As per this algorithm, the node which has the least number of connections will get the next request. So, as per our earlier example, when 100 new users start to use the application, all new user requests will be sent to node-C. Thus, load will be equally distributed among all nodes.
+
+AWS Organizations
+Central management for multiple AWS accounts
+
+Service control policies (SCPs) are a type of organization policy that you can use to manage permissions in your organization. SCPs offer central control over the maximum available permissions for all accounts in your organization.
+
+IAM architecture - 3 groups - dev, devops, monitering - mfa enabled
+
+Even if a Principal is allowed to perform a certain action (granted through IAM Policies), an attached SCP will override that capability if it enforces a Deny on that action. SCP takes precedence over IAM Policies. SCPs can be applied to the root of an organization or to individual accounts in an OU.
+
+Lamda real life example : Lamda used for automation
+Many ec2 server present  ...among them few are sitting idle ... so we created a python script to find idle servers based on cpu utilization durng weekend ... only production servers need to be running....dev servers need to be stopped...we used cron jobs for this..we wrote pythone script put it in lamda function triggered with cronjob.
+
+
+high Availability - auto scaling - details req: ami , sg, ports,secrets,volumes,ebs, minimum instance, max instance, 
+
+To convert t2 to t3
+ec2 modify-instance-attribute --instance-id INSTANCE_ID --ena-support
+
+AES-256 is the technology we use to encrypt data in AWS, including Amazon Simple Storage Service (S3) server-side encryption.

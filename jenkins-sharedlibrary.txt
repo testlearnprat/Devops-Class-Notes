@@ -69,6 +69,118 @@ eksShellPlugin('dockerhub', 'artisantek/useraccount', \
 ----------------------------------------------------------------------------------------------------------
 
 
+sudo systemctl start/restart sonarqube.service
+
+An endpoint is the URL of the entry point for an AWS web service. The AWS SDKs and the AWS Command
+ Line Interface (AWS CLI) automatically use the default endpoint for each service in an AWS Region.
+ But you can specify an alternate endpoint for your API requests.
+
+toleration seconds time
+verbose ansible -vv
+ignore_error ansible
+modules in ansible
+container restart policy kubernetes
+rest api
+use case of cmd entrypoint
+annotations in kubernetes
+etcd backup
+nodepole
+
+Nodepool:
+A node pool is a group of nodes within a cluster that all have the same configuration. Node pools 
+use a NodeConfig specification. Each node in the pool has a Kubernetes node label,
+ cloud.google.com/gke-nodepool , which has the node pool's name as its value.
+For example, you might create a node pool in your cluster with local SSDs, a minimum CPU platform, 
+Spot VMs, a specific node image, different machine types, or a more efficient virtual network interface.
+
+Kasten K10 is a data management platform that was purpose-built for Kubernetes. It provides enterprise 
+operations teams with an easy-to-use, scalable and secure system for backup/restore, disaster recovery and 
+mobility of Kubernetes applications.
+
+etcd port -- 2379
+etcd backup: https://www.youtube.com/watch?v=mODkt1OJDew
+etcd is a pod in kube-system
+use etcdctl command and ca certificate to take etcd backup
+
+Annotations:
+For example, we suggest using helm.sh/chart: NAME-VERSION as a label so that operators can conveniently find all 
+of the instances of a particular chart to use. If an item of metadata is not used for querying, it should be set 
+as an annotation instead. Helm hooks are always annotations.
+What is the difference between annotations and labels in Kubernetes?
+Labels can be used to select objects and to find collections of objects that satisfy certain conditions. 
+In contrast, annotations are not used to identify and select objects. The metadata in an annotation can be small 
+or large, structured or unstructured, and can include characters not permitted by labels.
+Annotations are used for “non-identifying information” i.e., metadata that Kubernetes does not care about. 
+As such, annotation keys and values have no constraints. Thus, if you want to add information for other humans 
+about a given resource, then annotations are a better choice.
+You can use Kubernetes annotations to attach arbitrary non-identifying metadata to objects. Clients such as tools and libraries can retrieve this metadata.
+"metadata": {
+  "annotations": {
+    "key1" : "value1",
+    "key2" : "value2"
+  }
+}
+
+
+Entrypoint:
+Ex - Package a cli utility in a container
+     Force container to run as non-root us er 
+     To install java then in argument git, httpd, tree, telnet
+     Add user - ask during runtime username
+CMD: Node.js 
+
+httpd is the Apache HyperText Transfer Protocol (HTTP) server program. It is designed to be run as a standalone 
+daemon process.
+
+API -- https://www.youtube.com/watch?v=1Dzh77Mu0XI
+- SOAP -XML -JSON -REST -graphql
+Restful api is an architectural style for an API that usesd http requests to access and use data. its not a programming launguage
+https://www.youtube.com/watch?v=ALrOcDPimWE
+
+OSI  - open systems interconnection 
+The Open Systems Interconnection (OSI) model describes seven layers that computer systems use to communicate over a network.
+
+The spec of a Pod has a restartPolicy field with possible values Always, OnFailure, and Never. The default value is Always.
+
+
+Ansible Modules: shell, file,yum ,apt, setup, ping
+fetch - fetch files from remote node
+find – Return a list of files based on specific criteria
+aws_api_gateway – Manage AWS API Gateway APIs
+aws_codepipeline – Create or delete AWS CodePipelines
+aws_s3 – manage objects in S3
+aws_eks_cluster – Manage Elastic Kubernetes Service Clusters
+docker_container – manage docker containers
+docker_container_info – Retrieves facts about docker container
+ec2 – create, terminate, start or stop an instance in ec2
+ec2_ami – create or destroy an image in ec2
+elb_classic_lb – Creates or destroys Amazon ELB
+k8s – Manage Kubernetes (K8s) objects
+pip – Manages Python library dependencies
+
+Ignore Errors : Use ignore_errors with every task that you need to ignore in case of errors.
+By default Ansible stops executing tasks on a host when a task fails on that host. You can use ignore_errors to continue on in spite of the failure.
+Ignoring failed commands
+Ignoring unreachable host errors
+Resetting unreachable hosts
+
+Debugging in Ansible:
+To understand what is happening when you run the playbook, you can run it with the verbose (-v) option. Every extra v will provide the end user with more debug output.
+Also use debug module : Assign the output of task to a register var then describe var using debug module
+
+Tolerationseconds:  a toleration with NoExecute effect can specify an optional tolerationSeconds field that dictates how long the pod will stay bound to the node after the taint is added.
+
+An endpoint is the URL of the entry point for an AWS web service
+
+An S3 VPC endpoint provides a way for an S3 request to be routed through to the Amazon S3 service, without having to connect a subnet to an internet gateway. The S3 VPC endpoint is what's known as a gateway endpoint.
+
+http response codes -https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 
 
 
+dockerignore file. The . dockerignore file is helpful to avoid inadvertently sending files or directories that are large or contain sensitive files to the daemon or avoid adding them to the image using the ADD or COPY commands
+
+A build's context is the set of files located at the PATH or URL specified as the positional argument to the build command: $ docker build [OPTIONS] PATH | URL | - ^^^^^^^^^^^^^^ The build process can refer to any of the files in the context.
+
+
+The expose keyword in a Dockerfile tells Docker that a container listens for traffic on the specified port. 

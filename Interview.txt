@@ -1,4 +1,8 @@
+introduction - https://www.youtube.com/watch?v=i7YJesoeWFI&list=PLLYW3zEOaqlLShAk9pd4FQ34KOpY7EJAq
+
 https://www.youtube.com/watch?v=o4QG_kqYvHk
+
+interview  - https://www.youtube.com/watch?v=lynyebKwPhw -- important -- troubleshosoting
 
 https://www.simplilearn.com/tutorials/devops-tutorial/devops-interview-questions
 
@@ -30,3 +34,6 @@ DevSecOps (short for development, security, and operations) is a development pra
 
 Disaster recovery drills are used to simulate fault scenarios, formulate recovery plans, and verify whether the plans are applicable and effective. Services are not affected during disaster recovery drills. When a fault 
 occurs, you can use the plans to quickly recover services, thus improving service continuity.
+
+
+multi module project in maven --for dependency management

@@ -929,6 +929,16 @@ of log files. It allows automatic rotation, compression, removal, and mailing of
 
 
 
+#!/bin/bash
+
+n=1 
+
+for [ i=1; i<=10; i++ ]; do
+	rem=`expr $i % 2`
+	if [ $rem -ne 0 ]; then
+	 echo "$rem"
+	fi
+done
 
 
 
