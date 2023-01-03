@@ -260,3 +260,5 @@ git checkout -b <branchname> <tagname> --> to create new branch out of tag
 git tag <tagname> <commitid> --> to create tag of that commit
 
 git log --oneline --decorate --all --graph
+
+src/main/java  --- change path in superpom

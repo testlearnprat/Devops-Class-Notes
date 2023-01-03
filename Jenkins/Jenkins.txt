@@ -467,3 +467,10 @@ In this case, you can specify a server definition in your settings.xml to provid
 A static code analysis tool inspects your codebase through the development cycle, and it's able to identify bugs, vulnerabilities, and compliance issues without actually running the program. The code analysis may help to ensure that your software is secure, reliable, and compliant.
 
 Periodic backup manager - to take backup to s3
+
+Env variables: localhost:8080/env-vars.html
+
+environment {
+		USER = "prat"
+		NUM = 33
+	}

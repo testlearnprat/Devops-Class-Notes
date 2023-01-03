@@ -310,7 +310,8 @@ Even if a Principal is allowed to perform a certain action (granted through IAM 
 
 Lamda real life example : Lamda used for automation
 Many ec2 server present  ...among them few are sitting idle ... so we created a python script to find idle servers based on cpu utilization durng weekend ... only production servers need to be running....dev servers need to be stopped...we used cron jobs for this..we wrote pythone script put it in lamda function triggered with cronjob.
-
+To deploy unittest cases we used lamda
+serverless cron jobs
 
 high Availability - auto scaling - details req: ami , sg, ports,secrets,volumes,ebs, minimum instance, max instance, 
 
@@ -318,3 +319,27 @@ To convert t2 to t3
 ec2 modify-instance-attribute --instance-id INSTANCE_ID --ena-support
 
 AES-256 is the technology we use to encrypt data in AWS, including Amazon Simple Storage Service (S3) server-side encryption.
+
+
+LAMDA:
+-pay asyou go
+-different languages support / frameworks
+-fully scalable
+-completely event driven
+
+USE CASES:  https://www.contino.io/insights/aws-lambda-use-cases
+Operating serverless websites
+Rapid document conversion
+Predictive page rendering
+Working with external services
+Log analysis on the fly
+Automated backups and everyday tasks
+Processing uploaded S3 objects
+Backend cleaning
+Bulk real-time data processing
+
+Limitations:
+There are some “hard limitations” for the runtime environment: the disk space is limited to 500MB,
+memory can vary from 128MB to 3GB and the execution timeout for a function is 15 minutes. 
+Package constraints like the size of deployment package (250MB) and the number of file descriptors 
+(1024) are also defined as hard limits.

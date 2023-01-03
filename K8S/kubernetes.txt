@@ -1223,3 +1223,9 @@ It used by log shippers, log watchers, monitoring agents
 The main container is an Nginx container that stores its logs on a volume mounted on /var/log/nginx. Mounting a volume at that location prevents Nginx from outputting its log data to the standard output and forces it to write them to access.log and error.log files.
 
 logs - https://sematext.com/guides/kubernetes-logging/#:~:text=Within%20a%20Kubernetes%20system%2C%20we,(or%20system%20component)%20logs.
+
+TROUBLESHOOTING:
+Sometimes pods will be in pending state, sometimes some memory issues , we run kubectl get --all, kubectl cluster -info dump , run kubectl logs in /var/logs/kubernetesclustermanager.log , get into them and where the problem is happening..also kubectl describe pods name for more info ...try to increase the node size ( if no resource), redeploy yaml file, adjust cpu and memory requests and limits.
+
+EFK setup:
+fluentd with aws cloudwatch, elastic stash and kibana, fluentd yaml file is deployed in ec2 instance - it has iam role cloudwatch full access - its a daemon service deployed in all nodes  - fluentd sends to cloudwatch - to kibana dashboard  

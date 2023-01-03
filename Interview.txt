@@ -37,3 +37,5 @@ occurs, you can use the plans to quickly recover services, thus improving servic
 
 
 multi module project in maven --for dependency management
+
+k8s troubleshooting - https://www.youtube.com/watch?v=yyVYR3SIMm8
