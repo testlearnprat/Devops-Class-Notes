@@ -107,3 +107,36 @@ spec:
     requests:
       storage: 1Gi
 ----------------------------------------------------------------------------------------------------------
+
+
+fldqiemvgwymlagu
+
+Analyze "sonartest": sqp_ed77e0a950b71a415f97339207b592a46f4f5134
+
+
+git -- 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
+
+
+sonar-scanner \
+  -Dsonar.projectKey=sonartest \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=http://13.233.223.186:9000 \
+  -Dsonar.login=sqp_ed77e0a950b71a415f97339207b592a46f4f5134
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDNjIDCZ/hDM4H9t8ZHktSV58ak6WX9pIbWMwTEI/npPeuHyFedpEeyexlLn+J8VlvEf0zFA0nZV/xIv6xsiMXLsGWMEdG7FFXLhJl/b3csJqHy5sDnyvB6pGHSXwxbfMPsAFGMGk7gfsiODEoJYQ+SUYj+XCl+OXYftwyRikc9uCbQatVbRcVDwEke6Q1hjYU850Md8QzVrtp5QYpzfC6lNrUGRs0AbXT3jmfVWDws3duC7QowFyNyGqnbQinOj5SiD/yJbrpBbgCG/OTy0TwGDxnVCcoE1c++YWS+LyezFyMEU7JdwzXiowqPxJIkD3JW5gMJcXD2I1DshzR/NJgi1Xm4Cczqc5ArnVR6Ga9MFtxo7G5cGKOkH+ChF8dH4Bcf/oBQJeaZ9SdF5HkMZy381OG/2x9g2b6P103wl3J/Qp2wxY1Sm0HaWhnUl/PPYXwBYH3tBQwEUdB6fYobtZ5dOlH9rTd8+yGFYxhxyKMERAfW0PQXSHaD/scB/BCcwr8= ubuntu@ip-172-31-33-133
+
+sqp_74b9dd28e735749035234b885b3be012562e5c46
+
+sonar-scanner \
+  -Dsonar.projectKey=sonartest \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=http://65.2.34.47:9000 \
+  -Dsonar.login=sqp_74b9dd28e735749035234b885b3be012562e5c46
+
+sqp_e441a3cfc5ad6f491e464daa2e9926ebf7def619
+
+
+mvn clean verify sonar:sonar \
+  -Dsonar.projectKey=sonartest \
+  -Dsonar.host.url=http://15.206.91.153:9000 \
+  -Dsonar.login=sqp_e441a3cfc5ad6f491e464daa2e9926ebf7def619

@@ -9,4 +9,4 @@ going on dev branch for the second release once the code is ready for the second
 branch before we create release 2 branch we merge release 1 branch to dev branch. 
 Then we create branch for second release from the dev branch
 
-whatever the issuses that we haave seen in previous releases that should not be visible in the next release.
+whatever the issuses that we have seen in previous releases that should not be visible in the next release.

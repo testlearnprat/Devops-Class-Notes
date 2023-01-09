@@ -1,0 +1,235 @@
+---------------------------------------------------------------------------------------------------------------
+Anisble
+---------------------------------------------------------------------------------------------------------------
+24-12-22 - class 1
+---------------------------------------------------------------------------------------------------------------
+Installation:
+
+Redhat:
+
+sudo yum update -y
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+sudo yum install ansible
+
+Ubuntu:
+
+sudo apt add-repository ppa:ansible/ansible
+sudo apt update
+sudo apt install ansible -y
+---------------------------------------------------------------------------------------------------------------
+Path: /etc/ansible
+---------------------------------------------------------------------------------------------------------------
+Inventory:
+
+1. Static Inventory [/etc/ansible/hosts]
+
+[group-name]
+<ip-address> ansible_user=<user-name> ansible_become_user=root
+---------------------------------------------------------------------------------------------------------------
+Ad-Hoc Commands:
+
+Syntax:
+ansible <hosts> -m <module> -a <arguments>
+
+Examples:
+
+asible all -m ping --> To ping all the host machines
+ansible <group-name> -m shell "touch t1" --> To create a file in particular group
+---------------------------------------------------------------------------------------------------------------
+Playbooks:
+
+1. Simple Playbook:
+
+- name: Play
+  hosts: all
+  become: true
+  tasks:
+  - name: wget
+    yum:
+      name: wget
+      state: present
+      update_cache: yes
+---------------------------------------------------------------------------------------------------------------
+State:
+
+present: 
+latest:
+absent:
+---------------------------------------------------------------------------------------------------------------
+2. Installing Multiple Packages
+
+- name: Play
+  hosts: all
+  become: true
+  tasks:
+  - name: Multiple Packages
+    yum:
+      name: ['wget', 'unzip', 'git']
+      state: present
+      update_cache: yes
+---------------------------------------------------------------------------------------------------------------
+3. Multiple Tasks
+
+- name: Play
+  hosts: all
+  become: true
+  tasks:
+  - name: Installing Package
+    yum:
+      name: wget
+      state: present
+      update_cache: yes
+  - name: Create File using Shell Module
+    shell:
+      cmd: "touch shell-module"
+      chdir: /home/ec2-user/
+  - name: Create File using File Module
+    file:
+      path: /home/ec2-user/file-module
+      state: touch
+---------------------------------------------------------------------------------------------------------------
+Ansible Facts:
+
+ansible all -m setup --> To check the facts gathered by Ansible
+
+- name: Play
+  hosts: all
+  become: true
+  tasks:
+  - name: Multiple Packages through YUM
+    yum:
+      name: ['wget', 'unzip', 'git']
+      state: present
+      update_cache: yes
+    when:
+    - ansible_distribution == "RedHat"
+  - name: Multiple Packages through APT
+    apt:
+      name: ['wget', 'unzip', 'git']
+      state: present
+      update_cache: yes
+    when:
+    - ansible_distribution == "Ubuntu"
+---------------------------------------------------------------------------------------------------------------
+Debugging in Ansible:
+
+- name: Play
+  hosts: all
+  become: true
+  tasks:
+  - name: Create File using File Module
+    file:
+      path: /home/ec2-user/file-module
+      state: touch
+    when:
+    - ansible_distribution == "RedHat"
+    register: test
+  - name: Print Registered Variable
+    debug:
+      var: test
+---------------------------------------------------------------------------------------------------------------
+Use Register Variable to execute the next task only if the previous has made some changes
+
+- name: Play
+  hosts: all
+  become: true
+  tasks:
+  - name: Installing Package
+    yum:
+      name: wget
+      state: present
+      update_cache: yes
+    register: var
+    when:
+    - ansible_distribution == "RedHat"   
+  - name: Create File using File Module
+    file:
+      path: /home/ec2-user/file-module
+      state: touch
+    when:
+    - ansible_distribution == "RedHat"
+    - var is changed
+---------------------------------------------------------------------------------------------------------------
+Ansible Tags:
+
+- name: Play
+  hosts: all
+  become: true
+  tasks:
+  - name: Installing Package
+    yum:
+      name: wget
+      state: present
+      update_cache: yes
+    tags: wget
+  - name: Create File using Shell Module
+    shell:
+      cmd: "touch shell-module"
+      chdir: /home/ec2-user/
+    tags: shell
+  - name: Create File using File Module
+    file:
+      path: /home/ec2-user/file-module
+      state: touch
+    tags: file
+
+ansible-playbook <playbook>.yaml --tags="<tag1>, <tag2>" --> To execute specific tasks
+ansible-playbook <playbook>.yaml --skip-tags="<tag1>, <tag2>" --> To skip specific tasks
+---------------------------------------------------------------------------------------------------------------
+Dynamic Inventory:
+
+Prerequisites:
+
+1. Install Boto3
+sudo yum install python3-pip -y
+pip install boto3
+
+2. Installing and configuring AWS Cli
+---------------------------------------------------------------------------------------------------------------
+plugin: aws_ec2
+
+regions:
+- ap-south-1
+
+keyed_groups:
+- key: tags
+  prefix: instance_tags
+- key: instance_type
+  prefix: instance_type
+---------------------------------------------------------------------------------------------------------------
+ansible.cfg file changes to be made:
+
+[defaults]
+inventory      = /etc/ansible/aws_ec2.yaml
+[inventory]
+enable_plugins = aws_ec2
+---------------------------------------------------------------------------------------------------------------
+Ansible Roles:
+
+Default Path: /etc/ansible/roles
+
+ansible-galaxy init <role-name> --> To initialize a ansible role
+
+test
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+---------------------------------------------------------------------------------------------------------------
+Things To Study:
+
+Ansible Tower
+Ansible Vault
+---------------------------------------------------------------------------------------------------------------

@@ -36,6 +36,15 @@ Thin Backup - To periodically take backup of jenkins server
 blueocean - Modern personalized dashboards
 active choices plugin - for dynamic parameterisation
 multibranch scan webhook trigger
+k8s cli
+email extension
+ssh build
+docker, docker pipeline -- to run docker script groovy in shared libraries
+Periodic backup manager - to take backup in s3
+
+we create a docker server , with dockerhub login credentials, or ecr credentials wch can push the image -- integration with docker
+
+we create a server wth kubecli installation which can access eks
 ---------------------------------------------------------------------------------------------------------------
 Assignment: Setup Github Webhook Trigger for a Jenkins Job
 ---------------------------------------------------------------------------------------------------------------
@@ -402,3 +411,80 @@ Download the plugin (*.hpi file) and put it in the following directory:
 Afterwards you will need to restart Jenkins.
 
 To change jenkkins home dir  ---> set env JENKINS_HOME
+
+Debian package management / RPM
+debian/linux mint -apt
+cent ops -yum
+alpine -apk
+fedora - yum 
+amazon linux - yum
+fedora - dnf (upgrade of yum)
+open suse -- zypper
+
+default path of k8s   $HOME/. kube
+default path of dcker /var/lib/docker
+default path of jenkins /var/lib/jenkins
+
+/var/lib/jenkins/logs  - debug jenkis
+
+Release repositories hold releases and Snapshot repositories hold snapshots. In maven a snapshot is defined as an artifact with a version ending in -SNAPSHOT.
+ When deployed, the snapshot is turned into a timestamp. By definition, snapshots are mutable, releases are immutable.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mvn deploy - https://maven.apache.org/plugins/maven-deploy-plugin/usage.html
+
+ include a valid <distributionManagement/> section POM, which at the minimum provides a <repository/> defining the remote repository location for your artifact.
+ To separate snapshot artifacts from release artifacts, you can also specify a <snapshotRepository/> location. Finally, to deploy a project website, you must
+ specify a <site/> section here as well. It's also important to note that this section can be inherited, allowing you to specify the deployment location one
+ time for a set of related projects.
+
+If your repository is secured, you may also want to configure your settings.xml file to define corresponding <server/> entries which provides authentication
+ information. Server entries are matched to the different parts of the distributionManagement using their <id/> elements. For example, your project may 
+have a distributionManagement section similar to the following:
+
+[...]
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>MyCo Internal Repository</name>
+      <url>Host to Company Repository</url>
+    </repository>
+  </distributionManagement>
+[...]
+In this case, you can specify a server definition in your settings.xml to provide authentication information for both of these repositories at once. Your server section might look like this:
+
+[...]
+    <server>
+      <id>internal.repo</id>
+      <username>maven</username>
+      <password>foobar</password>
+    </server>
+[...]
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------
+
+A static code analysis tool inspects your codebase through the development cycle, and it's able to identify bugs, vulnerabilities, and compliance issues without actually running the program.
+ The code analysis may help to ensure that your software is secure, reliable, and compliant.
+
+Periodic backup manager - to take backup to s3
+
+Env variables: localhost:8080/env-vars.html
+
+environment {
+		USER = "prat"
+		NUM = 33
+	}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+In parallel stages:
+If a user has a Declarative Pipeline script with parallel stages, and they set failFast true for those stages, if one of the stages fails then the build is immediately aborted.
+
+https://www.youtube.com/watch?v=N3QxnlGh_6A
+
+catcherror -- if one stage fails, job should still continue
+catcherror {
+}
+https://www.youtube.com/watch?v=u-1lyoas3ys
+
+we can set stageResult and buildResult

@@ -175,3 +175,49 @@ resource "aws_instance" "pvr_ec2_vpc2" {
   subnet_id = aws_subnet.subnet_vpc2.id
   vpc_security_group_ids = [aws_security_group.sg2.id]
 }
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+
+practice:
+
+provider "aws" {
+	region = "ap-south-1"
+} 
+
+resource "aws_instance" "instance1" {
+	ami = "copy ami"
+	instance_type = "t2.micro"
+	key_name = "k"
+	tags = {
+		Name = "instance1"
+	}
+	availability_zone = "ap-south-1a"
+}  
+
+provider "aws"  {
+	region = var.region
+}
+
+resource "aws_instance" "name" {
+	ami = var.ami
+	key_name = var.key
+	a_z = var.az
+	in_ty = var.type
+	tags = {
+		Name = var.name
+{
+
+variable "region" {
+	description = 
+	type = 
+	default = 
+}
+
+output "name" {
+	value = resourcetype.resourcename.id
+}
+

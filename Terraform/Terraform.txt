@@ -1,4 +1,4 @@
-IAC - Infrastructure as code is a process of managing and provisioning infrastucture through configuration files.
+ IAC - Infrastructure as code is a process of managing and provisioning infrastucture through configuration files.
 
 Installation - 
 --> Download the executable file of terraform open source from terraform.io
@@ -463,3 +463,26 @@ provider "aws" {
 region = "ap-south-1"
 shared_credentials_file = "/path of the credentials file in /.aws/credentials"
 3) setup environment variable
+
+variable.tf are files where all variables are declared; these might or might not have a default value.
+variable.tfvars are files where the variables are provided/assigned a value.
+
+terraform state rm resource name - 
+Terraform provides the dynamic block to create repeatable nested blocks within a resource. A dynamic block is similar to the for expression. Where for creates repeatable top-level resources, like VNets, dynamic creates nested blocks within a top-level resource, like subnets within a VNet.
+
+Best Practices:
+Keep state file in s3
+Write less complicated codes - split resources into modules - write code in minimalistic ways
+Keep stable code in branch in vcs
+Dont give permission to act on terraform
+CICD approve for build
+
+
+MetaArguments:
+Depends on
+Count
+For each
+Provider
+lifecycle
+
+https://intellipaat.com/blog/terraform-vs-ansible-difference/

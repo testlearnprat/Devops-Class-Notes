@@ -1,4 +1,8 @@
+introduction - https://www.youtube.com/watch?v=i7YJesoeWFI&list=PLLYW3zEOaqlLShAk9pd4FQ34KOpY7EJAq
+
 https://www.youtube.com/watch?v=o4QG_kqYvHk
+
+interview  - https://www.youtube.com/watch?v=lynyebKwPhw -- important -- troubleshosoting
 
 https://www.simplilearn.com/tutorials/devops-tutorial/devops-interview-questions
 
@@ -30,3 +34,18 @@ DevSecOps (short for development, security, and operations) is a development pra
 
 Disaster recovery drills are used to simulate fault scenarios, formulate recovery plans, and verify whether the plans are applicable and effective. Services are not affected during disaster recovery drills. When a fault 
 occurs, you can use the plans to quickly recover services, thus improving service continuity.
+
+
+multi module project in maven --for dependency management
+
+k8s troubleshooting - https://www.youtube.com/watch?v=yyVYR3SIMm8
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+So i have around 6yrs of exp in devops, so have come accross different projects and tools from creating cicd from scratch to deplying it to consumer
+for scm i hv used git as vcs, since most of our projects were in java i hv used maven as build tool, for cicd we hv used jenkins, also sonarqube for 
+quality checks. we had microservice architecture so used docker runtime for containerizing our applications and hv used k8s as orchestration tool.
+ we hv used aws as cloud service provider, used terraform as iac tool to deploy n manage infra and ansible for infra configuration.
+Coming to roles and responsibility like vcsupport, merge conflicts,branching strategy..creating infra , maintaining servers, uptime of servers,
+installing n updating packages, build and release, documentation, rnd new tools, so i hv written jenkins file, monitering pipelines, writtern docker files,
+written manifests files, playbooks and shell scripts for automating repetitive tasks..ya thats about me 

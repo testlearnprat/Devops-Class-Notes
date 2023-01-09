@@ -46,7 +46,7 @@ Git class-2 (23.10.2022)
 10. git config --global user.mail "<emailID>" --> adds the emailID
 11. git push origin <branch name> --> Push the local repo changes to the central repo.
 12. git blame --> checks who committed what changes.
-
+13. git -replace commit id --> to make change retaining the commit id
 
 
 Assignments: 
@@ -79,6 +79,11 @@ Git class-3 (26.10.2022)
 20. git clean --> remove untracked files
 21. git clean -n --> list untracked files
 22. git clean -n -d --> list untracked dir/files
+
+Git hooks are shell scripts found in the hidden . git/hooks directory of a Git repository. These scripts trigger actions 
+in response to specific events, so they can help you automate your development lifecycle. Although you may never have 
+noticed them, every Git repository includes 12 sample scripts..The pre-commit script is executed every time you run git 
+commit before Git asks the developer for a commit message or generates a commit object
 
 In .git all the information will be stored.
 A git submodule is a record within a host git repository that points to a specific commit in another external repository
@@ -250,6 +255,7 @@ maven-failsafe-plugin is designed for running integration tests, and decouples f
 from actually running the tests.
 
 To skip a test - "-Dmaven.test.skip=true"
+-Dmaven.test.ignore=true -- to ignore aa test when it fails
 
 git tag <tagname> -- to create tag
 git tag --> to list tags
@@ -258,3 +264,9 @@ git push --tags --> to push all tags to remote
 git tag -d <tagname> -- to delete
 git checkout -b <branchname> <tagname> --> to create new branch out of tag
 git tag <tagname> <commitid> --> to create tag of that commit
+
+git log --oneline --decorate --all --graph
+
+src/main/java  --- change path in superpom - to have source code in other folder
+
+mvn clean verify -Dskiptests -DskipITs

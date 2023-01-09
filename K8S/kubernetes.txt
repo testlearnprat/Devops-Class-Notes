@@ -125,7 +125,7 @@ kubectl scale rs <name>  --replicas=10  --> to change number of replicas
 
 for set based:
 matchExpressions:
-(key: app operator: in, values: )
+(key: app, operator: in, values: nginx )
 
 replica set uses recreate update strategy
 deployment uses rolling update strategy
@@ -415,12 +415,15 @@ kubectl get nodes --show-labels --> to display all the labels associated with no
 kubectl label node <nodename> <key=value> --> to add label to a node
 kubectl label node<nodename> <key>-   --> to remove a label
 
-2) Affinity - The affinity greatly expands the node selector by adding soft and hard scheduling rules. If the soft rule is not met the scheduler can still schedule the pods on to some node.
+2) Affinity - The affinity greatly expands the node selector by adding soft and hard scheduling rules. If the soft rule is not met the scheduler can 
+still schedule the pods on to some node.
 
 Hard rule[requiredDuringScheduling]: Rules must be met compulsorily for a pod to be schdules on a node.
-Soft Rule[Preferred during Schduling]: Scheduler will try to schedule the pods based on the preferences defined, if scheduler doesnot find any matching node , it will schedule the pod to any nodes.
+Soft Rule[Preferred during Schduling]: Scheduler will try to schedule the pods based on the preferences defined, if scheduler doesnot find any matching 
+node , it will schedule the pod to any nodes.
 
-IgnoredDuringExecution: If labels on a node change during run time such that the node ceizes to satisfy affinity rules the pods will still continue to run on the node.
+IgnoredDuringExecution: If labels on a node change during run time such that the node ceizes to satisfy affinity rules the pods will still continue to 
+run on the node.
 
 Types:
 a. nodeAffinity: like node selector we can use node affinity to schedule pods on specific nodes.
@@ -1202,4 +1205,34 @@ spec:
   resources:
     requests:
       storage: 1Gi
-----------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------
+
+Some of the Use cases for Init Containers can:
+
+Cause a pod to wait for another Kubernetes resource to be created before finishing startup.
+Perform sensitive startup steps securely outside of app containers.
+Populate data into a shared volume at startup.
+Communicate with another service at startup.
+Init containers can contain utilities or custom code for the setup that are not present in an app image.
+They can be given access to Secrets that app containers cannot access.
+Clone a Git repository into a Volume
+It can be used to wait for a service to start that is to be used by the main app
+An init container is a good candidate for delaying the application initialization until one or more dependencies are available.
+
+sidecar containers   --  https://blog.knoldus.com/sidecar-container-vs-init-container-in-kubernetes/#use-case-of-side-car-container
+It used by log shippers, log watchers, monitoring agents
+
+The main container is an Nginx container that stores its logs on a volume mounted on /var/log/nginx. Mounting a volume at that location prevents Nginx from outputting its log data to the standard output and forces it to write them to access.log and error.log files.
+
+logs - https://sematext.com/guides/kubernetes-logging/#:~:text=Within%20a%20Kubernetes%20system%2C%20we,(or%20system%20component)%20logs.
+
+TROUBLESHOOTING:
+Sometimes pods will be in pending state, sometimes some memory issues , we run kubectl get --all, kubectl cluster -info dump , run kubectl logs in /var/logs/kubernetesclustermanager.log , get into them and where the problem is happening..also kubectl describe pods name for more info ...try to increase the node size ( if no resource), redeploy yaml file, adjust cpu and memory requests and limits.
+
+EFK setup:
+fluentd with aws cloudwatch, elastic stash and kibana, fluentd yaml file is deployed in ec2 instance - it has iam role cloudwatch full access - its a daemon service deployed in all nodes  - fluentd sends to cloudwatch - to kibana dashboard  
+
+Preemption is the process of terminating Pods with lower Priority so that Pods with higher Priority can schedule on Nodes. Eviction is the process of proactively terminating one or more Pods on resource-starved Nodes
+
+https://thenewstack.io/deployment-strategies/
