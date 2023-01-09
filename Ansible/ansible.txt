@@ -231,5 +231,5 @@ test
 Things To Study:
 
 Ansible Tower
-Ansible Vault  --  https://www.digitalocean.com/community/tutorials/how-to-use-vault-to-protect-sensitive-ansible-data
+Ansible Vault
 ---------------------------------------------------------------------------------------------------------------

@@ -416,7 +416,7 @@ Debian package management / RPM
 debian/linux mint -apt
 cent ops -yum
 alpine -apk
-fedora
+fedora - yum 
 amazon linux - yum
 fedora - dnf (upgrade of yum)
 open suse -- zypper
@@ -427,7 +427,8 @@ default path of jenkins /var/lib/jenkins
 
 /var/lib/jenkins/logs  - debug jenkis
 
-Release repositories hold releases and Snapshot repositories hold snapshots. In maven a snapshot is defined as an artifact with a version ending in -SNAPSHOT. When deployed, the snapshot is turned into a timestamp. By definition, snapshots are mutable, releases are immutable.
+Release repositories hold releases and Snapshot repositories hold snapshots. In maven a snapshot is defined as an artifact with a version ending in -SNAPSHOT.
+ When deployed, the snapshot is turned into a timestamp. By definition, snapshots are mutable, releases are immutable.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -464,7 +465,8 @@ In this case, you can specify a server definition in your settings.xml to provid
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 ------------------------
 
-A static code analysis tool inspects your codebase through the development cycle, and it's able to identify bugs, vulnerabilities, and compliance issues without actually running the program. The code analysis may help to ensure that your software is secure, reliable, and compliant.
+A static code analysis tool inspects your codebase through the development cycle, and it's able to identify bugs, vulnerabilities, and compliance issues without actually running the program.
+ The code analysis may help to ensure that your software is secure, reliable, and compliant.
 
 Periodic backup manager - to take backup to s3
 
@@ -474,3 +476,15 @@ environment {
 		USER = "prat"
 		NUM = 33
 	}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+In parallel stages:
+If a user has a Declarative Pipeline script with parallel stages, and they set failFast true for those stages, if one of the stages fails then the build is immediately aborted.
+
+https://www.youtube.com/watch?v=N3QxnlGh_6A
+
+catcherror -- if one stage fails, job should still continue
+catcherror {
+}
+https://www.youtube.com/watch?v=u-1lyoas3ys
+
+we can set stageResult and buildResult

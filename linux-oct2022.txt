@@ -741,3 +741,8 @@ chgrp <usename> <groupname> --> to change group
 find command is recurssive in nature
 
 PSCP (PuTTY Secure Copy Protocol) is a command-line tool for transferring files and folders from a Windows computer to a Linux computer.
+
+lscpu -- detailes about cpu
+
+What does watch command do in Linux?
+Watch is a command on Linux that will repeatedly run commands for you, and it offers some very useful options. One of its basic options is that you can tell watch how long to wait before running the specified command again

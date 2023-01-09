@@ -1,4 +1,4 @@
-IAC - Infrastructure as code is a process of managing and provisioning infrastucture through configuration files.
+ IAC - Infrastructure as code is a process of managing and provisioning infrastucture through configuration files.
 
 Installation - 
 --> Download the executable file of terraform open source from terraform.io
@@ -484,3 +484,5 @@ Count
 For each
 Provider
 lifecycle
+
+https://intellipaat.com/blog/terraform-vs-ansible-difference/

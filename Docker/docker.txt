@@ -461,6 +461,7 @@ docker update --cpus 0.8 --memory 400m --memory-reservation 200m eb1ec3
 ------------------------------------------------------------------------------------------------------------------------------------
 Docker Network --> By default Docker creates 3 network drivers called Bridge, Host and Null. The advantage of docker network is it 
 isolates the container from the internet and thereforesere as an extra layer of security.
+
 Bridge network [--network bridge] --> Its the default network. Network name is docker zero . Defaul driver name is Bridge .. 
 By default all the containers created without specific network configuration during docker run will be attached to the docker bridge network
 To access this from outside we need to map the ports using publish during docker run.
@@ -493,7 +494,14 @@ Docker Networks:
 
 3. Null Network [--network none]
 
+docker network create n1
+docker inspect n1
+docker run -itd --network n1 image name 
+docker network create --subnet 192.10.0.0./16 name  --- to create network with particular subnet
 
+mention --ip during docker run to specify ip of the container
+
+docker network connect n2 n1a1  -- connect containers in different networks
 ---------------------------------------------------------------------------------------------------------------
 Docker Multi Stage Builds:
 
@@ -588,6 +596,9 @@ Syntax:
 HEALTHCHECK --interval=5m --timeout=3s   CMD curl -f http://localhost/ || exit 1
 HEALTHCHECK CMD curl --fail http://localhost:port/ || exit 1
 
+eks -1.20
+docker - 16/17
+
 Jenkins build parameterts --  first select environment, then stop build , promote the build, clear cache if required then start the service
 
 Best Practices to follow in Docker - https://dev.to/techworld_with_nana/top-8-docker-best-practices-for-using-docker-in-production-1m39
@@ -669,3 +680,46 @@ dockerignore file. The . dockerignore file is helpful to avoid inadvertently sen
 null networks are used to batch jobs - In a computer, a batch job is a program that is assigned to the computer to run without further user interaction.
 
 Maintainer: details about file, date, author
+
+docker run -it --detach-keys ctrl-x <image>
+docker stats
+--oom-kill-disable
+
+linux hardening -- https://www.intezer.com/blog/cloud-security/top-10-linux-server-hardening-and-security-best-practices/
+golden AMI
+WAF
+log rotation
+
+java -jar name.java
+nodejs npm start
+
+https://www.scaledagileframework.com/
+
+A golden AMI is an AMI that contains the latest security patches, software, configuration, and software agents that you need to install for logging, security maintenance, and performance monitoring.
+Creation of golden AMI:
+Launch an Amazon EC2 instance with the base AMI provided as a parameter.
+Install pre-update scripts, patches, and post-update scripts on the Amazon EC2 instance.
+Create an AMI from the Amazon EC2 instance, which is a golden AMI candidate.
+Perform vulnerability assessment on the newly created AMI:
+Apply tags to the candidate AMI.
+Launch an Amazon EC2 instance with the candidate AMI.
+Run scripts on the Amazon EC2 instance to launch a vulnerability assessment scan via API to Qualys.
+You can set up Qualys to send you email reports after each scan.
+Create an approval request to convert the candidate AMI to golden AMI:
+Send an approval notification to the designated IAM approver with the candidate AMI details.
+The approver can assess the scan report from Qualys for the candidate AMI to make an approval decision.
+Once approved, the candidate AMI ID will be stored in the SSM parameter store as a golden AMI ID.
+
+$ docker build -t test -<<EOF  -- used to reduce docker image
+
+https://www.scaledagileframework.com/  --- agile scrum
+
+logrotate is designed to ease administration of systems that
+       generate large numbers of log files.  It allows automatic
+       rotation, compression, removal, and mailing of log files.  Each
+       log file may be handled daily, weekly, monthly, or when it grows
+       too large.
+
+node server.js   ---  npm nstall
+
+docker system df -- to check storage used by docker images, containers
